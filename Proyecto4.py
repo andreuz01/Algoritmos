@@ -21,7 +21,7 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
         else:
             return False
 
-    #checa espacios libres suficientes
+    #Cuenta el numero de espacios validos para poner una materia y cuenta cuantas materias aun no se ponen
     espacios_validos = 0
     modulos = 0
     for m in range(n_materias):
@@ -48,11 +48,11 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
         if materias[num]["semestre"] != semestre or materias[num]["bloques"] == 0:
             continue
         
-        #si en esta hora no se puede usar al maestro saltar
+        #si en esta hora el maestro esta ocupado en otro semestre se salta esta iteracion
         if materias[num]["profesor"]["horarios"][row][col] == False:
                 continue 
 
-        #si ya se usa la materia en el dia saltar
+        #checa si ya esta guardada esta materia en esta columna
         for i in range(3):
             if materias[num]["materia"] == calendarios[semestre]["calendario"][i][col]:
                 invalido = True
@@ -60,8 +60,9 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
         if invalido:
             continue
         
-        #si usa el salon de computo checar si esta disponible
+        #si la materia que estamos probando usa el salon de computo checar si esta disponible en este horario
         if materias[num]["computo"] == True:
+            #revisa los dos salones y guarda cual de los dos es el disponible
             for z in range(2):
                 if computo[z]["horarios"][row][col] == True:
                     indexcomp=z
@@ -77,7 +78,7 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
         #restamos un modulo de los disponibles de la clase
         materias[num]["bloques"] -= 1
 
-
+        #marca como ocupado la hora en computo
         if indexcomp is not None:
             computo[indexcomp]["horarios"][row][col] = False
 
@@ -97,7 +98,8 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
 
     cont=0
     conte= 0
-    #comprobar sandiwches
+    #cuenta cuantos vacios hay, cada uno con un peso dependiendo de su lugar dando los valores 1,2,3 por si solos y todas las combinaciones
+    #luego cuenta los empty, si hay mas de 0 entonces aun no es necesario regresar falso
     if(sandwich == False):
         for i in range(3):
             if calendarios[semestre]["calendario"][i][col] == "vacío":
