@@ -1,7 +1,7 @@
 import numpy as np
 
 def Horario_impl(pos, calendarios, materias, computo, sandwich):
-    #variables
+    #Variables
     n_materias = len(materias)
 
     semestre = pos //15
@@ -10,7 +10,7 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
     col = localpos % 5
     row = localpos // 5
 
-    #detenerse al llegar a la ultima poscicion
+    #Detenerse al llegar a la ultima poscición
     if pos == 60:
         cont=0
         for i in range(n_materias):
@@ -21,7 +21,8 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
         else:
             return False
 
-    #checa espacios libres suficientes
+    #Checa espacios libres suficientes
+    #(Cuenta el numero de espacios validos para poner una materia y cuenta cuantas materias aun no se ponen)
     espacios_validos = 0
     modulos = 0
     for m in range(n_materias):
@@ -38,21 +39,22 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
         return False
 
     
-    #funcion principal
+    #Función principal
     for num in range(n_materias):
-        #inicializar
+        #Inicializar
         invalido = False
         indexcomp = None
 
-        #si la materia es de otro semestre o ya no le quedan clases que usar la salta
+        #Si la materia es de otro semestre o ya no le quedan clases que usar la salta
         if materias[num]["semestre"] != semestre or materias[num]["bloques"] == 0:
             continue
         
-        #si en esta hora no se puede usar al maestro saltar
+        #Si en esta hora el maestro esta ocupado en otro semestre se salta esta iteración
         if materias[num]["profesor"]["horarios"][row][col] == False:
                 continue 
 
-        #si ya se usa la materia en el dia saltar
+        #Checa si ya esta guardada esta materia en esta columna
+        #Si ya se usa la materia en el dia se salta a la siguiente iteración
         for i in range(3):
             if materias[num]["materia"] == calendarios[semestre]["calendario"][i][col]:
                 invalido = True
@@ -60,8 +62,9 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
         if invalido:
             continue
         
-        #si usa el salon de computo checar si esta disponible
+        #Si la materia que estamos probando usa el salon de computo checar si esta disponible en este horario
         if materias[num]["computo"] == True:
+            #Revisa los dos salones y guarda cual de los dos es el disponible
             for z in range(2):
                 if computo[z]["horarios"][row][col] == True:
                     indexcomp=z
@@ -70,21 +73,21 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
                 continue
 
 
-        #rellenamos el horario con la materia disponible
+        #Rellenamos el horario con la materia disponible
         calendarios[semestre]["calendario"][row][col] = materias[num]["materia"]
-        #marcamos esta hora del profe como ocupada
+        #Marcamos esta hora del profe como ocupada
         materias[num]["profesor"]["horarios"][row][col] = False
-        #restamos un modulo de los disponibles de la clase
+        #Restamos un módulo de los disponibles de la clase
         materias[num]["bloques"] -= 1
 
-
+        #Marca como ocupado la hora en computo
         if indexcomp is not None:
             computo[indexcomp]["horarios"][row][col] = False
 
         if Horario_impl(pos+1, calendarios, materias, computo, sandwich):
                 return True
                 
-        #backtacking 
+        #Backtacking 
         materias[num]["bloques"] += 1
         calendarios[semestre]["calendario"][row][col] = "empty".ljust(30)
         materias[num]["profesor"]["horarios"][row][col] = True
@@ -92,12 +95,13 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
         if indexcomp is not None:
             computo[indexcomp]["horarios"][row][col] = True
 
-    #intentamos poner una hora vacia, si no se puede por el sandwich returnea falso
+    #intentamos poner una hora vacía, si no se puede por el sandwich retorna falso
     calendarios[semestre]["calendario"][row][col] = "vacío"
 
     cont=0
     conte= 0
-    #comprobar sandiwches
+    #Cuenta cuantos vacios hay, cada uno con un peso dependiendo de su lugar dando los valores 1,2,3 por si solos y todas las combinaciones
+    #Luego cuenta los empty, si hay mas de 0 entonces aun no es necesario regresar falso
     if(sandwich == False):
         for i in range(3):
             if calendarios[semestre]["calendario"][i][col] == "vacío":
@@ -107,13 +111,12 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
         if cont == 2 and conte != 0:
                 return False
 
-    #seguir despues de poner vacio
+    #Seguir después de poner vacío
     if Horario_impl(pos+1, calendarios, materias, computo, sandwich):
                 return True
     
     calendarios[semestre]["calendario"][row][col] == "empty".ljust(30)
     return False
-
 
 def Horario(materias, computo):
     calendarios = [
@@ -125,6 +128,8 @@ def Horario(materias, computo):
 
     pos = 0
     sandwich = True
+    #Se realizan las verificaciones para que un mismo profesor no tenga
+    #más de 2 asignaturas en el mismo semestre
     for z in range (0,6):
         for j in range (0,6):
             if z==j:
@@ -160,13 +165,11 @@ def Horario(materias, computo):
         print("\nNo es posible este calendario\n")
         print("="*30)
     else:
-# Si todo está correcto, imprimir
-
-
+        # Si todo está correcto se imprime el calendario
         ancho = 15
         dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
 
-        # ancho total real de la tabla
+        #Ancho total real de la tabla
         ancho_total = (ancho +3) * len(dias) + 1
 
         for z in range(4):
@@ -176,14 +179,14 @@ def Horario(materias, computo):
             titulo = f" Semestre {z+z+2} "
             print(titulo.center(ancho_total, "="))
 
-            # DÍAS 
+            #Días 
             for dia in dias:
                 print(f"| {dia.ljust(ancho)}", end=" ")
             print("|")
 
             print("=" * ancho_total)
 
-            # materias
+            #Materias
             for i in range(3):
 
                 for k in range(5):
@@ -204,7 +207,7 @@ def Horario(materias, computo):
             titulo = f" Computo {z+1} "
             print(titulo.center(ancho_total, "="))
 
-            # DÍAS
+            #Días
             for dia in dias:
                 print(f"| {dia.ljust(ancho)}", end=" ")
             print("|")
@@ -289,7 +292,6 @@ profesores = [
         [True, True, True, False, True]
     ]}
 ]
-
 
 materias = [
     # Semestre 0
