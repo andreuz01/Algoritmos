@@ -21,12 +21,12 @@ debbugear = False
 #Función utilizada para debbugear e imprimir el calendario
 def imprimir_calendario_debug(calendarios, semestre, titulo="CALENDARIO"):
 
-    #Para borrar cada iteración
-    #subprocess.run('cls', shell=True) #Para limpiar la pantalla al inicio de cada ejecución del código
-
     global debbugear
     if not debbugear:
         return
+    
+    #Para borrar cada iteración
+    subprocess.run('cls', shell=True) #Para limpiar la pantalla al inicio de cada ejecución del código
 
     dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
 
@@ -220,15 +220,24 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
                         cont += 1+i
                 if calendarios[semestre]["calendario"][i][col] == "empty".ljust(30):
                         conte += 1+i
-            if cont == 2 and conte == 0: 
-                
-                #DEBUG imprimir el calendario original AL LLENAR UN VACÍO
-                imprimir_calendario_debug(calendarios, semestre, "DEBUG")
-                
-                #Se elimina el error puesto y se realiza el backtracking
+            if cont == 2 and conte == 0:                 
+                #-----Backtacking evitando el sandwich-----
+                #Si no encontró una solución válida y retorno, hace el backtracking
+                #Como se descarta la rama por el false, se tienen que devolver los valores del maestro, bloques faltantes y salon de cómputo
+                #Para hacer que haga backtrack y retroceda a su estado anterior
+
+                #Le suma un bloque faltante a la materia
+                materias[num]["bloques"] += 1
+                #Se asigna la celda actual como una empty para poder volver a probar
                 calendarios[semestre]["calendario"][row][col] = "empty".ljust(30)
-                
-                #DEBUG imprimir el calendario original AL LLENAR UN VACÍO
+                #Se establece el horario del profesor como disponible
+                materias[num]["profesor"]["horarios"][row][col] = True
+
+                #Regresa la disponibilidad del salón de cómputo solo si este estaba marcado como ocupado por la materia
+                if indexcomp is not None:
+                    computo[indexcomp]["horarios"][row][col] = True
+
+                #DEBUG imprimir el después de evitar el sandwich
                 imprimir_calendario_debug(calendarios, semestre, "DEBUG")
                 
                 return False
@@ -246,6 +255,7 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
         materias[num]["bloques"] += 1
         #Convierte el espacio anterior como vacío
         calendarios[semestre]["calendario"][row][col] = "empty".ljust(30)
+        #Se establece el horario del profesor como disponible
         materias[num]["profesor"]["horarios"][row][col] = True
 
         #DEBUG imprimir el calendario al hacer backtracking
@@ -257,7 +267,7 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
 
     #En este punto el for ya intentó poner todas las materias, entonces intentará ingresar un espacio "vacío"
 
-    #Intentamos poner una hora vacía, si no se puede por el sandwich retorna falso y descarta la rama
+    #Intentamos poner una hora vacía
     calendarios[semestre]["calendario"][row][col] = "vacío"
 
     #DEBUG imprimir el calendario original AL LLENAR UN VACÍO
@@ -576,7 +586,7 @@ profesores = [
 ]
 
 materias = [
-    # Semestre 0
+    # Semestre 0, requieren 12 bloques, o sea 3 vacíos
     {"materia": "Algebra",      "bloques": 1, "computo": False, "semestre": 0, "profesor": profesores[0], "salon": "151"},
     {"materia": "Calculo",      "bloques": 3, "computo": False,  "semestre": 0, "profesor": profesores[1], "salon": "151"},
     {"materia": "Redes",        "bloques": 2, "computo": True,  "semestre": 0, "profesor": profesores[2], "salon": "151"},
@@ -584,7 +594,7 @@ materias = [
     {"materia": "Ingles",       "bloques": 1, "computo": False, "semestre": 0, "profesor": profesores[4], "salon": "151"},
     {"materia": "Etica",        "bloques": 2, "computo": False, "semestre": 0, "profesor": profesores[5], "salon": "151"},
 
-    # Semestre 1
+    # Semestre 1, requieren 12 bloques, o sea 3 vacíos
     {"materia": "Algoritmos",   "bloques": 1, "computo": True, "semestre": 1, "profesor": profesores[6], "salon": "160"},
     {"materia": "Proyectos",    "bloques": 3, "computo": False, "semestre": 1, "profesor": profesores[7], "salon": "160"},
     {"materia": "Fisica",       "bloques": 2, "computo": False, "semestre": 1, "profesor": profesores[8], "salon": "160"},
@@ -592,7 +602,7 @@ materias = [
     {"materia": "Circuitos",    "bloques": 3, "computo": True, "semestre": 1, "profesor": profesores[0], "salon": "160"},
     {"materia": "Probabilidad", "bloques": 2, "computo": False, "semestre": 1, "profesor": profesores[1], "salon": "160"},
 
-    # Semestre 2
+    # Semestre 2, requieren 12 bloques, o sea 3 vacíos
     {"materia": "Sistemas",     "bloques": 2, "computo": True, "semestre": 2, "profesor": profesores[2], "salon": "200"},
     {"materia": "Algebraa",     "bloques": 1, "computo": False, "semestre": 2, "profesor": profesores[3], "salon": "200"},
     {"materia": "Calculoa",     "bloques": 3, "computo": False, "semestre": 2, "profesor": profesores[4], "salon": "200"},
@@ -600,7 +610,7 @@ materias = [
     {"materia": "Electronica",  "bloques": 1, "computo": True, "semestre": 2, "profesor": profesores[6], "salon": "200"},
     {"materia": "Estadistica",  "bloques": 3, "computo": False, "semestre": 2, "profesor": profesores[7], "salon": "200"},
 
-    # Semestre 3
+    # Semestre 3, requieren 12 bloques, o sea 3 vacíos
     {"materia": "Redesa",       "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[8], "salon": "210"},
     {"materia": "Algoritmosa",  "bloques": 2, "computo": True, "semestre": 3, "profesor": profesores[9], "salon": "210"},
     {"materia": "Proyectosa",   "bloques": 3, "computo": False, "semestre": 3, "profesor": profesores[0], "salon": "210"},
@@ -608,8 +618,6 @@ materias = [
     {"materia": "Seguridad",    "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[2], "salon": "210"},
     {"materia": "Compiladores", "bloques": 3, "computo": True,  "semestre": 3, "profesor": profesores[3], "salon": "210"}
 ]
-
-
 
 #Se crean los objetos de computo, con sus horarios 5x3 llenos de Trues
 computo = [
