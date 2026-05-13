@@ -21,6 +21,7 @@ debbugear = False
 #Función utilizada para debbugear e imprimir el calendario
 def imprimir_calendario_debug(calendarios, semestre, titulo="CALENDARIO"):
 
+    #Para borrar cada iteración
     #subprocess.run('cls', shell=True) #Para limpiar la pantalla al inicio de cada ejecución del código
 
     global debbugear
