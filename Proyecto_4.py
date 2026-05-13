@@ -3,11 +3,11 @@ import numpy as np
 import subprocess
 subprocess.run('cls', shell=True) #Para limpiar la pantalla al inicio de cada ejecución del código
 
-#-------------------Settings--------------------
+#-------------------Settings para pruebas locales--------------------
 
 #Variable para cambiar el sandwich
 #Para evitar que haya una clase seguida de una hora libre seguido de una clase
-global_sandwich = True
+global_sandwich = False
 
 #Se inicializa la variable de iteraciones 
 #Sirve para ver la "rapidez" del código
@@ -200,6 +200,39 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
         if indexcomp is not None:
             computo[indexcomp]["horarios"][row][col] = False
 
+        #Nueva verificación de sandwich. se quiere checar el sandwich una vez se puso una materia en la última celda de cada columna, solamente ahi se puede saber si hay sandwich o no
+        #Igualmente tomamos en cuenta si se van a permitir los sándwiches o no. Teniendo esto en mente la posición correcta donde debe de ir la verificación del sandwich es justo después 
+        #Poner una materia.
+        
+        #-----Variables para evitar el sandwich-----
+        
+        #Cuenta las celdas con el string "vacío"
+        cont=0
+
+        #Cuenta las celdas llenas de "empty.ljust(30)"
+        conte= 0
+
+        #Es un chequeo que se realiza en cada iteración
+        #Cuenta cuantos vacios hay, cada uno con un peso dependiendo de su lugar dando los valores 1,2,3 por si solos y todas las combinaciones
+        if((sandwich == False) and (row == 2)):
+            for i in range(3):
+                if calendarios[semestre]["calendario"][i][col] == "vacío":
+                        cont += 1+i
+                if calendarios[semestre]["calendario"][i][col] == "empty".ljust(30):
+                        conte += 1+i
+            if cont == 2 and conte == 0: 
+                
+                #DEBUG imprimir el calendario original AL LLENAR UN VACÍO
+                imprimir_calendario_debug(calendarios, semestre, "DEBUG")
+                
+                #Se elimina el error puesto y se realiza el backtracking
+                calendarios[semestre]["calendario"][row][col] = "empty".ljust(30)
+                
+                #DEBUG imprimir el calendario original AL LLENAR UN VACÍO
+                imprimir_calendario_debug(calendarios, semestre, "DEBUG")
+                
+                return False
+
         #Pasa a la siguiente llamada con la siguiente posición a rellenar, con los mismos calendarios, materias computo y variable del sandwich
         if Horario_impl(pos+1, calendarios, materias, computo, sandwich):
             #Si llegó a la solución retorna true para salir de todas las llamadas
@@ -229,27 +262,6 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
 
     #DEBUG imprimir el calendario original AL LLENAR UN VACÍO
     imprimir_calendario_debug(calendarios, semestre, "DEBUG")
-
-    #-----Variables para evitar el sandwich-----
-    
-    #Cuenta los "vacío"
-    cont=0
-
-    #Cuenta los "empty.ljust(30)"
-    conte= 0
-
-    #Es un chequeo que se realiza en cada iteración
-    #Cuenta cuantos vacios hay, cada uno con un peso dependiendo de su lugar dando los valores 1,2,3 por si solos y todas las combinaciones
-    if(sandwich == False):
-        for i in range(3):
-            if calendarios[semestre]["calendario"][i][col] == "vacío":
-                    cont += 1+i
-            if calendarios[semestre]["calendario"][i][col] == "empty".ljust(30):
-                    conte += 1+i
-        if cont == 2 and conte != 0: 
-            #Se elimina el error puesto y se realiza el backtracking
-            calendarios[semestre]["calendario"][row][col] = "empty".ljust(30)
-            return False
 
     #Seguir después de poner vacío
     if Horario_impl(pos+1, calendarios, materias, computo, sandwich):
@@ -391,6 +403,8 @@ def Horario(materias, computo, sandwich = True):
 
             print("=" * ancho_total)
             print()
+    
+    print(f'\nEl número de iteraciones fueron: {iteraciones}')
 
 #----------Documentación de las listas----------
 
@@ -461,9 +475,7 @@ profesores = [
         [True, True, True, False, True]
     ]}
 ]
-"""
 
-"""
 #Lista de materias
 materias = [
     # Semestre 0
@@ -577,15 +589,15 @@ materias = [
     {"materia": "Proyectos",    "bloques": 3, "computo": False, "semestre": 1, "profesor": profesores[7], "salon": "160"},
     {"materia": "Fisica",       "bloques": 2, "computo": False, "semestre": 1, "profesor": profesores[8], "salon": "160"},
     {"materia": "BasesDatos",   "bloques": 1, "computo": True,  "semestre": 1, "profesor": profesores[9], "salon": "160"},
-    {"materia": "Circuitos",    "bloques": 3, "computo": False, "semestre": 1, "profesor": profesores[0], "salon": "160"},
+    {"materia": "Circuitos",    "bloques": 3, "computo": True, "semestre": 1, "profesor": profesores[0], "salon": "160"},
     {"materia": "Probabilidad", "bloques": 2, "computo": False, "semestre": 1, "profesor": profesores[1], "salon": "160"},
 
     # Semestre 2
     {"materia": "Sistemas",     "bloques": 2, "computo": True, "semestre": 2, "profesor": profesores[2], "salon": "200"},
     {"materia": "Algebraa",     "bloques": 1, "computo": False, "semestre": 2, "profesor": profesores[3], "salon": "200"},
     {"materia": "Calculoa",     "bloques": 3, "computo": False, "semestre": 2, "profesor": profesores[4], "salon": "200"},
-    {"materia": "Arquitectura", "bloques": 2, "computo": False,  "semestre": 2, "profesor": profesores[5], "salon": "200"},
-    {"materia": "Electronica",  "bloques": 1, "computo": False, "semestre": 2, "profesor": profesores[6], "salon": "200"},
+    {"materia": "Arquitectura", "bloques": 2, "computo": True,  "semestre": 2, "profesor": profesores[5], "salon": "200"},
+    {"materia": "Electronica",  "bloques": 1, "computo": True, "semestre": 2, "profesor": profesores[6], "salon": "200"},
     {"materia": "Estadistica",  "bloques": 3, "computo": False, "semestre": 2, "profesor": profesores[7], "salon": "200"},
 
     # Semestre 3
@@ -593,17 +605,20 @@ materias = [
     {"materia": "Algoritmosa",  "bloques": 2, "computo": True, "semestre": 3, "profesor": profesores[9], "salon": "210"},
     {"materia": "Proyectosa",   "bloques": 3, "computo": False, "semestre": 3, "profesor": profesores[0], "salon": "210"},
     {"materia": "IA",           "bloques": 2, "computo": True,  "semestre": 3, "profesor": profesores[1], "salon": "210"},
-    {"materia": "Seguridad",    "bloques": 1, "computo": False, "semestre": 3, "profesor": profesores[2], "salon": "210"},
+    {"materia": "Seguridad",    "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[2], "salon": "210"},
     {"materia": "Compiladores", "bloques": 3, "computo": True,  "semestre": 3, "profesor": profesores[3], "salon": "210"}
 ]
+
+
 
 #Se crean los objetos de computo, con sus horarios 5x3 llenos de Trues
 computo = [
         {"horarios": np.full((3,5), True)},
         {"horarios": np.full((3,5), True)}
-    ]
+]
 
 #Llama a la función Horario, pasando la lista de materias como la lista de salones de cómputo
 
+#----------------Pruebas locales--------------------
+
 Horario(materias,computo, global_sandwich)
-print(f'\nEl número de iteraciones fueron: {iteraciones}')
