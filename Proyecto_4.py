@@ -3,17 +3,20 @@ import numpy as np
 import subprocess
 subprocess.run('cls', shell=True) #Para limpiar la pantalla al inicio de cada ejecución del código
 
-#---------Settings----------
+#-------------------Settings--------------------
 
 #Variable para cambiar el sandwich
 #Para evitar que haya una clase seguida de una hora libre seguido de una clase
-global_sandwich = False
+global_sandwich = True
 
-#Variable de iteraciones para ver la "rapidez" del código
+#Se inicializa la variable de iteraciones 
+#Sirve para ver la "rapidez" del código
 iteraciones = 0
 
 #Variable que permite a la función debug_imprimir() ver cada iteración de la búsqueda
 debbugear = False
+
+#-------------------Funciones y código--------------------
 
 #Función utilizada para debbugear e imprimir el calendario
 def imprimir_calendario_debug(calendarios, semestre, titulo="CALENDARIO"):
@@ -314,6 +317,8 @@ def Horario(materias, computo, sandwich = True):
         
     #Se realiza la llamada a la implementación de la función dentro del if
         
+    print(f'Se ha inicializado correctamente el agendador de horarios')
+
     #Si retorna falso, se imprime que no es posible la configuración actual del calendario
     if not Horario_impl(pos, calendarios, materias, computo, sandwich):
         print("="*30)
@@ -598,8 +603,6 @@ computo = [
     ]
 
 #Llama a la función Horario, pasando la lista de materias como la lista de salones de cómputo
-
-global_sandwich = False
 
 Horario(materias,computo, global_sandwich)
 print(f'\nEl número de iteraciones fueron: {iteraciones}')

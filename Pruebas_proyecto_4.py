@@ -2,65 +2,66 @@ import numpy as np
 
 #Aqui se guardan todas las matrices de prueba
 
+#Listas de pruebas
 profesores = [
     {"profesor": "Peniche", "horarios": [
-        [True,  True,  False, True,  False],
-        [True,  True,  True,  False, True],
+        [True,  False,  False, True,  False],
+        [False,  False,  True,  False, True],
         [False, True,  True,  True,  True]
     ]},
 
     {"profesor": "Aylin", "horarios": [
-        [True,  False, True,  True,  True],
+        [True,  False, True,  False,  True],
         [True,  True,  False, True,  False],
-        [True,  True,  True,  False, True]
+        [True,  True,  True,  False, False]
     ]},
 
     {"profesor": "Franklin", "horarios": [
         [False, True,  True,  False, True],
-        [True,  True,  False, True,  True],
+        [False,  True,  False, True,  True],
         [True,  False, True,  True,  False]
     ]},
 
     {"profesor": "Edson", "horarios": [
         [True,  True,  True,  False, True],
-        [False, True,  True,  True,  True],
+        [False, False,  True,  False,  True],
         [True,  False, True,  True,  False]
     ]},
 
     {"profesor": "Kenia", "horarios": [
         [True,  False, True,  True,  False],
-        [True,  True,  True,  False, True],
+        [False,  False,  True,  False, True],
         [False, True,  True,  True,  True]
     ]},
 
     {"profesor": "Vega", "horarios": [
-        [True,  True,  False, True,  True],
+        [False,  True,  False, False,  True],
         [False, True,  True,  True,  False],
         [True,  True,  False, True,  True]
     ]},
 
     {"profesor": "Bolio", "horarios": [
-        [False, True,  True,  True,  False],
-        [True,  False, True,  True,  True],
+        [False, True,  True,  False,  False],
+        [False,  False, True,  True,  True],
         [True,  True,  False, True,  True]
     ]},
 
     {"profesor": "Martinez", "horarios": [
         [True,  False, True,  True,  False],
-        [True,  True,  False, True,  True],
+        [True,  False,  False, False,  True],
         [False, True,  True,  False, True]
     ]},
 
     {"profesor": "Lopez", "horarios": [
-        [True,  True,  False, True,  False],
-        [False, True,  True,  True,  True],
+        [True,  False,  False, True,  False],
+        [False, True,  True,  True,  False],
         [True,  False, True,  False, True]
     ]},
 
     {"profesor": "Castro", "horarios": [
-        [False, True,  True,  False, True],
+        [False, False,  True,  False, True],
         [True,  False, True,  True,  False],
-        [True,  True,  False, True,  True]
+        [True,  True,  False, True,  False]
     ]}
 ]
 
