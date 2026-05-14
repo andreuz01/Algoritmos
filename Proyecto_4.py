@@ -7,6 +7,8 @@
 #Leosugerencia3: Estaría chingon que tmb pueda mostrar como el de octavio los calendarios de los salones de computo, la matriz 
 #de horarios de cada profe en interfaz gráfica, etc, pero lo mismo esto es más algo opcional
 
+##Leosugerencia4: Atenten contra su vida
+
 import numpy as np
 
 import subprocess
