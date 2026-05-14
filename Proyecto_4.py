@@ -7,18 +7,22 @@
 #Leosugerencia3: Estaría chingon que tmb pueda mostrar como el de octavio los calendarios de los salones de computo, la matriz 
 #de horarios de cada profe en interfaz gráfica, etc, pero lo mismo esto es más algo opcional
 
-##Leosugerencia4: Atenten contra su vida
+##Gussugerencia: Esteticamente siento todo esta muy metido, hay codigo repetido por ejemplo en partes donde restauras cosas, seria posible hacerlo funcio y solo llamar en imp 
 
 import numpy as np
 
 import subprocess
-#subprocess.run('cls', shell=True) #Para limpiar la pantalla al inicio de cada ejecución del código
+subprocess.run('cls', shell=True) #Para limpiar la pantalla al inicio de cada ejecución del código
+
+# ******************************************************************************************************
+print('\n*******************************************************************************************\n')
+# ******************************************************************************************************
 
 #-------------------Settings--------------------
 
 #Variable para cambiar el sandwich
 #Para evitar que haya una clase seguida de una hora libre seguido de una clase
-global_sandwich = True
+global_sandwich = False
 
 #Se inicializa la variable de iteraciones 
 #Sirve para ver la "rapidez" del código
@@ -27,9 +31,11 @@ iteraciones = 0
 #Variable que permite a la función debug_imprimir() ver cada iteración de la búsqueda
 debbugear = False
 
-#hola andreuz
-#matate gustavo
-#hola leo
+#----------Documentación de las listas----------
+
+#La lista de materias tiene a cada objeto con el nombre de la materia, la cantidad de bloques, el booleano del salon de computo, el semestre, el profesor y el salón
+#El profesor dentro de este diccionario está dentro de otra lista de un diccionario que representa a los profesores
+#La lista salones de computo son otra lista de diccionarios, con las dos matrices de horario de los dos salones
 
 #-------------------Funciones y código--------------------
 
@@ -83,7 +89,6 @@ def imprimir_calendario_debug(calendarios, semestre, titulo="CALENDARIO"):
     print()
 
 #Función que por medio de backtracking va armando el calendario segun las restricciones dadas
-
 #Tiene 5 parámetros: Pos va de 0 a 60 posiciones, debido a que son 15 celdas por 4 semestres
 #Igualmente pasa la lista de calendarios, la lista de materias, los salones de computo y la variable que prohibe o permite el sandwich
 
@@ -157,6 +162,7 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
     #Un ciclo for que se va ejecutando para cada materia dentro de la lista de materias
     for num in range(n_materias):
         
+        ##Checa por cada materia si cumplen las condiciones para ser colocadas, si no, son saltadas
         #-----Inicializar variables-----
         
         #Variable para realizar el chequeo de que la materia no se repita el mismo día
@@ -200,6 +206,7 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
                 continue
 
         #----------Rellenar el calendario (matriz)----------
+        ##Si pasa pruebas es insertada en el calendario, en la columna y fila
 
         #Rellenamos el horario con la materia disponible
         calendarios[semestre]["calendario"][row][col] = materias[num]["materia"]
@@ -222,14 +229,16 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
         #-----Variables para evitar el sandwich-----
         
         #Cuenta las celdas con el string "vacío"
+        ##Cuantas HAS colocado y son vacias
         cont=0
 
         #Cuenta las celdas llenas de "empty.ljust(30)"
+        ##Cuales NO has colocado
         conte= 0
 
         #Es un chequeo que se realiza en cada iteración
         #Cuenta cuantos vacios hay, cada uno con un peso dependiendo de su lugar dando los valores 1,2,3 por si solos y todas las combinaciones
-        if((sandwich == False) and (row == 2)):
+        if((sandwich == False) and (row == 2)): ##si NO puede haer sandwich y ES la ultima fila del calendario
             for i in range(3):
                 if calendarios[semestre]["calendario"][i][col] == "vacío":
                         cont += 1+i
@@ -282,6 +291,7 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
 
     #En este punto el for ya intentó poner todas las materias, entonces intentará ingresar un espacio "vacío"
 
+    ##hardcodeado luego intenta vacio
     #Intentamos poner una hora vacía
     calendarios[semestre]["calendario"][row][col] = "vacío"
 
@@ -292,6 +302,7 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
     if Horario_impl(pos+1, calendarios, materias, computo, sandwich):
         return True
     
+    ##si no funciona vacio se sale
     #Hacer el backtracking luego de haber probado vacío y marcar la rama como inválida
     calendarios[semestre]["calendario"][row][col] = "empty".ljust(30)
     
@@ -316,14 +327,29 @@ def Horario(materias, computo, sandwich = True):
     #Se inicializa en la posición 0
     pos = 0
 
+    ##Chequeo de materias por semestre para los for, checa cuantas materias hay en cada semestre
+    semestre0 = 0
+    semestre1 = 0
+    semestre2 = 0
+    semestre3 = 0
+    for z in range(len(materias)):
+        if materias[z]["semestre"] == 0: semestre0 += 1
+        if materias[z]["semestre"] == 1: semestre1 += 1
+        if materias[z]["semestre"] == 2: semestre2 += 1
+        if materias[z]["semestre"] == 3: semestre3 += 1
+    ##Los vuelve sus puntos finales 
+    semestre1 = semestre1 + semestre0
+    semestre2 = semestre1 + semestre2
+    semestre3 = semestre2 + semestre3
+
     #Se realizan las verificaciones para que un mismo profesor no tenga
     #más de 2 asignaturas en el mismo semestre
 
     #Cada ciclo for revisa un semestre distinto, por los rangos de índices establecidos en las materias de cada semestre
     #Va verificando que el mismo profesor no se repita más de 1 vez en cada semestre
     
-    for z in range (0,6):
-        for j in range (0,6):
+    for z in range (0,semestre0):
+        for j in range (0,semestre0):
             #Si ambas son la misma materia a ser comparada se continua a la siguiente iteracion
             if z==j:
                  continue
@@ -331,22 +357,22 @@ def Horario(materias, computo, sandwich = True):
             if materias[z]["profesor"]== materias[j]["profesor"]:
                  print("El profesor tiene dos materias en el segundo semestre")
                  return False
-    for z in range (6,12):
-        for j in range (6,12):
+    for z in range (semestre0,semestre1):
+        for j in range (semestre0,semestre1):
             if z==j:
                  continue
             if materias[z]["profesor"]== materias[j]["profesor"]:
                  print("El profesor tiene dos materias en el cuarto semestre")
                  return False
-    for z in range (12,18):
-        for j in range (12,18):
+    for z in range (semestre1,semestre2):
+        for j in range (semestre1,semestre2):
             if z==j:
                  continue
             if materias[z]["profesor"]== materias[j]["profesor"]:
                  print("El profesor tiene dos materias en el sexto semestre")
                  return False
-    for z in range (18,24):
-        for j in range (18,24):
+    for z in range (semestre2,semestre3):
+        for j in range (semestre2, semestre3):
             if z==j:
                  continue
             if materias[z]["profesor"]== materias[j]["profesor"]:
@@ -355,7 +381,7 @@ def Horario(materias, computo, sandwich = True):
         
     #Se realiza la llamada a la implementación de la función dentro del if
         
-    print(f'Se ha inicializado correctamente el agendador de horarios')
+    print(f'Se ha inicializado correctamente el agendador de horarios\n')
 
     #Si retorna falso, se imprime que no es posible la configuración actual del calendario
     if not Horario_impl(pos, calendarios, materias, computo, sandwich):
@@ -384,18 +410,47 @@ def Horario(materias, computo, sandwich = True):
 
             print("=" * ancho_total)
 
-            #Materias
             for i in range(3):
 
+                # Consigue la materia hazlo el primero
                 for k in range(5):
-
                     texto = calendarios[z]["calendario"][i][k]
-
                     print(f"| {texto.ljust(ancho)}", end=" ")
-
                 print("|")
 
-            print("=" * ancho_total)
+
+                # Consigue el profesor
+                for k in range(5):
+                    ##Que materia es la que tenemos
+                    nombre = calendarios[z]["calendario"][i][k]
+
+                    profe = ""
+                    for m in materias:
+                        ##si es la que buscamos se guarda
+                        if m["materia"] == nombre:
+                            profe = m["profesor"]["profesor"]
+                            break
+
+                    print(f"| {profe.ljust(ancho)}", end=" ")
+                print("|")
+
+
+                # Salon de computo
+                for k in range(5):
+
+                    nombre = calendarios[z]["calendario"][i][k]
+
+                    salon = ""
+                    for m in materias:
+                        if m["materia"] == nombre:
+                            salon = "Salon " + "Computo" if m["computo"] else "Salon " + m["salon"]
+                            break
+
+                    print(f"| {salon.ljust(ancho)}", end=" ")
+                print("|")
+
+
+                print("=" * ancho_total)
             print()
 
         for z in range(2):
@@ -427,18 +482,13 @@ def Horario(materias, computo, sandwich = True):
                 print("|")
 
             print("=" * ancho_total)
-            print()
     
     print(f'\nEl número de iteraciones fueron: {iteraciones}')
 
-#----------Documentación de las listas----------
-
-#La lista de materias tiene a cada objeto con el nombre de la materia, la cantidad de bloques, el booleano del salon de computo, el semestre, el profesor y el salón
-#El profesor dentro de este diccionario está dentro de otra lista de un diccionario que representa a los profesores
-#La lista salones de computo son otra lista de diccionarios, con las dos matrices de horario de los dos salones
 
 ###################################################
 # v Insertar listas de profesores y materias aqui v
+###################################################
 
 #----------Prueba 2----------
 #Tiempo aproximado (30 segs - 2 mins)
@@ -538,6 +588,7 @@ materias = [
     {"materia": "Compiladores", "bloques": 2, "computo": True,  "semestre": 3, "profesor": profesores[3], "salon": "210"}
 ]
 
+###################################################
 # ^ Insertar listas de profesores y materias aqui ^
 ###################################################
 
@@ -549,3 +600,46 @@ computo = [
 
 #Llama a la función Horario, pasando la lista de materias como la lista de salones de cómputo, como la variable de sandwich
 Horario(materias,computo, global_sandwich)
+
+# ******************************************************************************************************
+print('\n*******************************************************************************************\n')
+# ******************************************************************************************************
+
+
+
+##Funcion Gus, IDE, para checar en video cada cosa una a una, tendre que hacer una funcion que PRUEBE el calendario en todos sus aspectods
+##IDE 
+
+## Prueba 1 - No mas de un bloque por calendario, imprimir calendarios y mostrar que solo hay una
+
+## Prueba 2 - Imprimir la lista de materias y ver que todos los bloques ya han sido asignados - generar lista de materias 
+
+## Prueba 3 - Una asignatura no puede ser asignada mas de una vez el mismo dia- generar calendario y mostra y ya
+
+## Prueba 4 - Profesores: Asignado a no mas de una clase en el mismo bloque, no mas de una asignatura por semestre, respetar disponibilidad
+## Imprimir que profe dio clase en que bloque, mostrar que asignatura dio en el semestre y cual fue, y imprimir su calendario inicial de profesores y compararlo con el finalizado
+
+## Prueba 5 - Computo, solo las materias que lo ocupen lo usan, y maximo dos lo usan en un bloque.
+##Imprimir las materias de computo, mostrar calendario inicial, final usado y que materias lo usaron cada bloque
+
+## Prueba 6 - Sandwich, ya implementado solo poder activarlo o desactivarlo
+
+def IDE():
+    semestre0 = 0
+    semestre1 = 0
+    semestre2 = 0
+    semestre3 = 0
+    for z in range(len(materias)):
+        if materias[z]["semestre"] == 0: semestre0 += 1
+        if materias[z]["semestre"] == 1: semestre1 += 1
+        if materias[z]["semestre"] == 2: semestre2 += 1
+        if materias[z]["semestre"] == 3: semestre3 += 1
+
+    semestre1 = semestre1 + semestre0
+    semestre2 = semestre1 + semestre2
+    semestre3 = semestre2 + semestre3
+
+    print(semestre0, semestre1, semestre2, semestre3)
+
+##IDE()
+
