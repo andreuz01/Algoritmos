@@ -8,8 +8,6 @@ import numpy as np
 #Los resultados de las pruebas están guardados en archivos txt con su nombre de prueba y el tipo
 #cS (con Sandwich) y sS (sin Sandwich)
 
-#weaman3000
-
 #--------------------Listas de pruebas--------------------
 
 #----------Prueba original----------
