@@ -1,5 +1,11 @@
-#Leosugerencia: creo que la creación de las matrices de computo se puede poner dentro de la funcion Horarios
+#Leosugerencia1: creo que la creación de las matrices de computo se puede poner dentro de la funcion Horarios
 #ya que esta realmente no se modifica y se crea de manera muy similar a las 4 matrices de horario de cada semestre
+
+#Leosugerencia2: esto realmente es para que lo lea en el futuro, me gustaría encapsular en una funcion el print final del calendario
+#y añadirle que diga profe y salon, pero realmente no importa
+
+#Leosugerencia3: Estaría chingon que tmb pueda mostrar como el de octavio los calendarios de los salones de computo, la matriz 
+#de horarios de cada profe en interfaz gráfica, etc, pero lo mismo esto es más algo opcional
 
 import numpy as np
 
