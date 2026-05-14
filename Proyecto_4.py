@@ -27,6 +27,9 @@ iteraciones = 0
 #Variable que permite a la función debug_imprimir() ver cada iteración de la búsqueda
 debbugear = False
 
+
+#matate gustavo
+
 #-------------------Funciones y código--------------------
 
 #Función utilizada para debbugear e imprimir el calendario
