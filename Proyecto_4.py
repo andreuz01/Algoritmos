@@ -1,13 +1,16 @@
+#Leosugerencia: creo que la creación de las matrices de computo se puede poner dentro de la funcion Horarios
+#ya que esta realmente no se modifica y se crea de manera muy similar a las 4 matrices de horario de cada semestre
+
 import numpy as np
 
 import subprocess
 subprocess.run('cls', shell=True) #Para limpiar la pantalla al inicio de cada ejecución del código
 
-#-------------------Settings para pruebas locales--------------------
+#-------------------Settings--------------------
 
 #Variable para cambiar el sandwich
 #Para evitar que haya una clase seguida de una hora libre seguido de una clase
-global_sandwich = False
+global_sandwich = True
 
 #Se inicializa la variable de iteraciones 
 #Sirve para ver la "rapidez" del código
@@ -422,107 +425,11 @@ def Horario(materias, computo, sandwich = True):
 #El profesor dentro de este diccionario está dentro de otra lista de un diccionario que representa a los profesores
 #La lista salones de computo son otra lista de diccionarios, con las dos matrices de horario de los dos salones
 
-"""
-#Lista de diccionarios de profesores, con nombre de profesor y lista de listas asemejando a una matriz de numpy
-profesores = [
-    {"profesor": "Peniche", "horarios": [
-        [False, True, False, True, True],
-        [True, True, False, True, True],
-        [False, True, True, True, True]
-    ]},
+###################################################
+# v Insertar listas de profesores y materias aqui v
 
-    {"profesor": "Aylin", "horarios": [
-        [True, True, True, True, True],
-        [True, False, True, False, True],
-        [True, True, True, True, True]
-    ]},
-
-    {"profesor": "Franklin", "horarios": [
-        [True, True, True, True, True],
-        [False, True, True, True, True],
-        [True, True, False, True, True]
-    ]},
-
-    {"profesor": "Edson", "horarios": [
-        [True, True, True, True, True],
-        [True, True, True, True, True],
-        [True, True, True, True, True]
-    ]},
-
-    {"profesor": "Kenia", "horarios": [
-        [True, True, True, True, True],
-        [True, True, True, True, True],
-        [True, True, True, True, True]
-    ]},
-
-    {"profesor": "Vega", "horarios": [
-        [True, True, True, True, True],
-        [True, True, True, True, True],
-        [True, True, True, True, True]
-    ]},
-
-    {"profesor": "Bolio", "horarios": [
-        [True, True, True, True, True],
-        [True, True, True, True, True],
-        [True, True, True, True, True]
-    ]},
-
-    {"profesor": "Martinez", "horarios": [
-        [True, False, True, True, True],
-        [True, True, True, True, False],
-        [True, True, True, True, True]
-    ]},
-
-    {"profesor": "Lopez", "horarios": [
-        [True, True, False, True, True],
-        [True, True, True, True, True],
-        [False, True, True, True, True]
-    ]},
-
-    {"profesor": "Castro", "horarios": [
-        [True, True, True, True, False],
-        [True, False, True, True, True],
-        [True, True, True, False, True]
-    ]}
-]
-
-#Lista de materias
-materias = [
-    # Semestre 0
-    {"materia": "Calculo",      "bloques": 3, "computo": False,  "semestre": 0, "profesor": profesores[1], "salon": "151"},
-    {"materia": "Algebra",      "bloques": 3, "computo": False, "semestre": 0, "profesor": profesores[0], "salon": "151"},
-    {"materia": "Redes",        "bloques": 2, "computo": False,  "semestre": 0, "profesor": profesores[2], "salon": "151"},
-    {"materia": "Programacion", "bloques": 3, "computo": True,  "semestre": 0, "profesor": profesores[3], "salon": "151"},
-    {"materia": "Ingles",       "bloques": 2, "computo": False, "semestre": 0, "profesor": profesores[4], "salon": "151"},
-    {"materia": "Etica",        "bloques": 1, "computo": False, "semestre": 0, "profesor": profesores[5], "salon": "151"},
-
-    # Semestre 1
-    {"materia": "Algoritmos",   "bloques": 3, "computo": False, "semestre": 1, "profesor": profesores[6], "salon": "160"},
-    {"materia": "Proyectos",    "bloques": 3, "computo": False, "semestre": 1, "profesor": profesores[7], "salon": "160"},
-    {"materia": "Fisica",       "bloques": 2, "computo": False, "semestre": 1, "profesor": profesores[8], "salon": "160"},
-    {"materia": "BasesDatos",   "bloques": 3, "computo": True,  "semestre": 1, "profesor": profesores[9], "salon": "160"},
-    {"materia": "Circuitos",    "bloques": 2, "computo": False, "semestre": 1, "profesor": profesores[0], "salon": "160"},
-    {"materia": "Probabilidad", "bloques": 1, "computo": False, "semestre": 1, "profesor": profesores[1], "salon": "160"},
-
-    # Semestre 2
-    {"materia": "Sistemas",     "bloques": 3, "computo": False, "semestre": 2, "profesor": profesores[2], "salon": "200"},
-    {"materia": "Algebraa",     "bloques": 3, "computo": False, "semestre": 2, "profesor": profesores[3], "salon": "200"},
-    {"materia": "Calculoa",     "bloques": 2, "computo": False, "semestre": 2, "profesor": profesores[4], "salon": "200"},
-    {"materia": "Arquitectura", "bloques": 3, "computo": True,  "semestre": 2, "profesor": profesores[5], "salon": "200"},
-    {"materia": "Electronica",  "bloques": 2, "computo": False, "semestre": 2, "profesor": profesores[6], "salon": "200"},
-    {"materia": "Estadistica",  "bloques": 1, "computo": False, "semestre": 2, "profesor": profesores[7], "salon": "200"},
-
-    # Semestre 3
-    {"materia": "Redesa",       "bloques": 3, "computo": False, "semestre": 3, "profesor": profesores[8], "salon": "210"},
-    {"materia": "Algoritmosa",  "bloques": 3, "computo": False, "semestre": 3, "profesor": profesores[9], "salon": "210"},
-    {"materia": "Proyectosa",   "bloques": 2, "computo": False, "semestre": 3, "profesor": profesores[0], "salon": "210"},
-    {"materia": "IA",           "bloques": 3, "computo": False,  "semestre": 3, "profesor": profesores[1], "salon": "210"},
-    {"materia": "Seguridad",    "bloques": 2, "computo": False, "semestre": 3, "profesor": profesores[2], "salon": "210"},
-    {"materia": "Compiladores", "bloques": 1, "computo": True,  "semestre": 3, "profesor": profesores[3], "salon": "210"}
-]
-"""
-
-#Listas de pruebas
+#----------Prueba 2----------
+#Tiempo aproximado (30 segs - 2 mins)
 profesores = [
     {"profesor": "Peniche", "horarios": [
         [True,  False,  False, True,  False],
@@ -586,38 +493,41 @@ profesores = [
 ]
 
 materias = [
-    # Semestre 0, requieren 12 bloques, o sea 3 vacíos
+    # Semestre 0, lleva 10 modulos
     {"materia": "Algebra",      "bloques": 1, "computo": False, "semestre": 0, "profesor": profesores[0], "salon": "151"},
-    {"materia": "Calculo",      "bloques": 3, "computo": False,  "semestre": 0, "profesor": profesores[1], "salon": "151"},
-    {"materia": "Redes",        "bloques": 2, "computo": True,  "semestre": 0, "profesor": profesores[2], "salon": "151"},
-    {"materia": "Programacion", "bloques": 3, "computo": True,  "semestre": 0, "profesor": profesores[3], "salon": "151"},
+    {"materia": "Calculo",      "bloques": 2, "computo": False,  "semestre": 0, "profesor": profesores[1], "salon": "151"},
+    {"materia": "Redes",        "bloques": 3, "computo": True,  "semestre": 0, "profesor": profesores[2], "salon": "151"},
+    {"materia": "Programacion", "bloques": 2, "computo": True,  "semestre": 0, "profesor": profesores[3], "salon": "151"},
     {"materia": "Ingles",       "bloques": 1, "computo": False, "semestre": 0, "profesor": profesores[4], "salon": "151"},
-    {"materia": "Etica",        "bloques": 2, "computo": False, "semestre": 0, "profesor": profesores[5], "salon": "151"},
+    {"materia": "Etica",        "bloques": 1, "computo": False, "semestre": 0, "profesor": profesores[5], "salon": "151"},
 
-    # Semestre 1, requieren 12 bloques, o sea 3 vacíos
+    # Semestre 1, requiere 10 modulos
     {"materia": "Algoritmos",   "bloques": 1, "computo": True, "semestre": 1, "profesor": profesores[6], "salon": "160"},
-    {"materia": "Proyectos",    "bloques": 3, "computo": False, "semestre": 1, "profesor": profesores[7], "salon": "160"},
-    {"materia": "Fisica",       "bloques": 2, "computo": False, "semestre": 1, "profesor": profesores[8], "salon": "160"},
-    {"materia": "BasesDatos",   "bloques": 1, "computo": True,  "semestre": 1, "profesor": profesores[9], "salon": "160"},
-    {"materia": "Circuitos",    "bloques": 3, "computo": True, "semestre": 1, "profesor": profesores[0], "salon": "160"},
-    {"materia": "Probabilidad", "bloques": 2, "computo": False, "semestre": 1, "profesor": profesores[1], "salon": "160"},
+    {"materia": "Proyectos",    "bloques": 2, "computo": False, "semestre": 1, "profesor": profesores[7], "salon": "160"},
+    {"materia": "Fisica",       "bloques": 1, "computo": False, "semestre": 1, "profesor": profesores[8], "salon": "160"},
+    {"materia": "BasesDatos",   "bloques": 3, "computo": True,  "semestre": 1, "profesor": profesores[9], "salon": "160"},
+    {"materia": "Circuitos",    "bloques": 2, "computo": True, "semestre": 1, "profesor": profesores[0], "salon": "160"},
+    {"materia": "Probabilidad", "bloques": 1, "computo": False, "semestre": 1, "profesor": profesores[1], "salon": "160"},
 
-    # Semestre 2, requieren 12 bloques, o sea 3 vacíos
-    {"materia": "Sistemas",     "bloques": 2, "computo": True, "semestre": 2, "profesor": profesores[2], "salon": "200"},
+    # Semestre 2, requieren 10 modulos
+    {"materia": "Sistemas",     "bloques": 1, "computo": True, "semestre": 2, "profesor": profesores[2], "salon": "200"},
     {"materia": "Algebraa",     "bloques": 1, "computo": False, "semestre": 2, "profesor": profesores[3], "salon": "200"},
-    {"materia": "Calculoa",     "bloques": 3, "computo": False, "semestre": 2, "profesor": profesores[4], "salon": "200"},
-    {"materia": "Arquitectura", "bloques": 2, "computo": True,  "semestre": 2, "profesor": profesores[5], "salon": "200"},
-    {"materia": "Electronica",  "bloques": 1, "computo": True, "semestre": 2, "profesor": profesores[6], "salon": "200"},
-    {"materia": "Estadistica",  "bloques": 3, "computo": False, "semestre": 2, "profesor": profesores[7], "salon": "200"},
+    {"materia": "Calculoa",     "bloques": 2, "computo": False, "semestre": 2, "profesor": profesores[4], "salon": "200"},
+    {"materia": "Arquitectura", "bloques": 1, "computo": True,  "semestre": 2, "profesor": profesores[5], "salon": "200"},
+    {"materia": "Electronica",  "bloques": 3, "computo": True, "semestre": 2, "profesor": profesores[6], "salon": "200"},
+    {"materia": "Estadistica",  "bloques": 2, "computo": False, "semestre": 2, "profesor": profesores[7], "salon": "200"},
 
-    # Semestre 3, requieren 12 bloques, o sea 3 vacíos
+    # Semestre 3, requieren 10 bloques
     {"materia": "Redesa",       "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[8], "salon": "210"},
-    {"materia": "Algoritmosa",  "bloques": 2, "computo": True, "semestre": 3, "profesor": profesores[9], "salon": "210"},
-    {"materia": "Proyectosa",   "bloques": 3, "computo": False, "semestre": 3, "profesor": profesores[0], "salon": "210"},
-    {"materia": "IA",           "bloques": 2, "computo": True,  "semestre": 3, "profesor": profesores[1], "salon": "210"},
-    {"materia": "Seguridad",    "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[2], "salon": "210"},
-    {"materia": "Compiladores", "bloques": 3, "computo": True,  "semestre": 3, "profesor": profesores[3], "salon": "210"}
+    {"materia": "Algoritmosa",  "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[9], "salon": "210"},
+    {"materia": "Proyectosa",   "bloques": 2, "computo": False, "semestre": 3, "profesor": profesores[0], "salon": "210"},
+    {"materia": "IA",           "bloques": 1, "computo": True,  "semestre": 3, "profesor": profesores[1], "salon": "210"},
+    {"materia": "Seguridad",    "bloques": 3, "computo": True, "semestre": 3, "profesor": profesores[2], "salon": "210"},
+    {"materia": "Compiladores", "bloques": 2, "computo": True,  "semestre": 3, "profesor": profesores[3], "salon": "210"}
 ]
+
+# ^ Insertar listas de profesores y materias aqui ^
+###################################################
 
 #Se crean los objetos de computo, con sus horarios 5x3 llenos de Trues
 computo = [
@@ -625,8 +535,5 @@ computo = [
         {"horarios": np.full((3,5), True)}
 ]
 
-#Llama a la función Horario, pasando la lista de materias como la lista de salones de cómputo
-
-#----------------Pruebas locales--------------------
-
+#Llama a la función Horario, pasando la lista de materias como la lista de salones de cómputo, como la variable de sandwich
 Horario(materias,computo, global_sandwich)
