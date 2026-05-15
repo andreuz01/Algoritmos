@@ -622,11 +622,13 @@ def ImprimirCalendario(calendario, materias, computo):
 
             print("=" * ancho_total)
 
-        print(f'\nHorarios Sandwiches se encuentra en: {global_sandwich}')
-        print(f'\nEl número de iteraciones fueron: {iteraciones}\n')
+#Modificar y reparar estas variables a la hora de imprimir
+#        print(f'\nHorarios Sandwiches se encuentra en: {global_sandwich}')
+#Mover esta variable a la generación del calendario
+#        print(f'\nEl número de iteraciones fueron: {iteraciones}\n')
         
 
-        input_ignore = input("Presiona Enter para continuar...")
+        input_ignore = input("\nPresiona Enter para continuar...")
         subprocess.run('cls', shell=True)
 
 def MateriasBloquesProfesores(materias):
@@ -712,88 +714,120 @@ def ReiniciarCalendario():
 
 ##FALTA: demostrar varios de los puntos que pide el profesor para las pruebas
 def MainMenu():
+    
+    def generar_calendario():
+        subprocess.run('cls', shell=True)
+        ReiniciarCalendario()
+        print("\nInicializando...\n")
+        Horario(calendarios, materias, computo, global_sandwich)
+    
+    def ver_calendario():
+        subprocess.run('cls', shell=True)
+        print("\nMostrando horario...\n")
+        ImprimirCalendario(calendarios, materias, computo)
+
+    def mostrar_materias_bloques_y_profesores():
+        subprocess.run('cls', shell=True)
+        print("Cada horario tiene ciertas necesidades que deben cumplirse cada semestre")
+        print(" -Un profesor no puede exceder 1 asignatura por semestre")
+        print(" -Cada asignatura debe cubrir exactamente su número requerido de bloques\n")
+        print("Esta lista muestra un conteo de estas necesidades\n")
+        input("Presiona Enter para continuar...")
+        subprocess.run('cls', shell=True)
+        MateriasBloquesProfesores(materias)
+    
+    def configuracion_del_sandwich():
+        config_sandwich = True
+        while config_sandwich:
+            subprocess.run('cls', shell=True)
+            print("La configuración de huecos en el horario permite o desactiva los bloques vacíos disponibles entre clases, desea...\n")
+            print("1. Permitir huecos en el horario\n")
+            print("2. Desactivar huecos en el horario\n")
+            print("3. Volver\n")
+
+            eleccion_sandwich = input("Ingrese el número de la opción que desea probar: ")
+
+            match eleccion_sandwich:
+                case "1":
+                    global_sandwich = True
+                    subprocess.run('cls', shell=True)
+                    print("\nHuecos permitidos\n")
+                    input("Presiona Enter para continuar...")
+                    config_sandwich = False
+                    subprocess.run('cls', shell=True)
+                case "2":
+                    global_sandwich = False
+                    subprocess.run('cls', shell=True)
+                    print("\nHuecos desactivados\n")  # <-- Bug corregido: "\Huecos" → "\nHuecos"
+                    input("Presiona Enter para continuar...")
+                    config_sandwich = False
+                    subprocess.run('cls', shell=True)
+                case "3":
+                    config_sandwich = False
+                    subprocess.run('cls', shell=True)
+                case _:
+                    opcion_invalida()    
+
+    def exit_MainMenu():
+        subprocess.run('cls', shell=True)
+        print("Ha salido del programa...\n")
+        iniciado = False
+
+    def opcion_invalida():
+        subprocess.run('cls', shell=True)
+        print("\nOpción inválida, por favor ingrese un número válido\n")
+        input_ignore = input("Presiona Enter para continuar...")
+
+    def work_zone():
+        subprocess.run('cls', shell=True)
+        print("¯\_('u'))_/¯")
+        input_ignore = input("\nZona en construcción, presiona Enter para continuar...")
+
     global global_sandwich
     iniciado = True
 
     while iniciado:
+        subprocess.run('cls', shell=True)
         print("===========================================================================================")
         print("****************************Bienvenido al generador de horarios****************************")
         print("===========================================================================================")
 
         print("\nPor favor ingrese la opciones que desees probar\n")
-        print("0. Reiniciar calendario\n")
-        print("1. Generar calendario\n")
-        print("2. Ver calendario\n")
+        print("1. Generar horario\n")
+        print("2. Ver horario\n")
         print("3. Configurar huecos en el horario\n")
         print("4. Materias, bloques y profesores\n")
+        print("5. ---\n")
+        print("6. ---\n")        
         print("7. Salir\n")
 
         eleccion = (input("Ingrese el número de la opción que desea probar: "))
 
-        if eleccion == "0":
-            subprocess.run('cls', shell=True)
-            print("\nReiniciando calendario...\n")
-            ReiniciarCalendario()
-            print("¡Calendario reiniciado éxitosamente!\n")
-            input_ignore = input("Presiona Enter para continuar...")
-            subprocess.run('cls', shell=True)
+        match eleccion:
+
+            case "1":
+                generar_calendario()
+
+            case "2":
+                ver_calendario()
+
+            case "3":
+                configuracion_del_sandwich()
             
-        if eleccion == "1":
-            subprocess.run('cls', shell=True) #Limpia la pantalla para que se vea mejor el calendario generado
-            print("\nGenerando calendario...\n")
-            Horario(calendarios, materias, computo, global_sandwich)
-            
-        elif eleccion == "2":
-            subprocess.run('cls', shell=True)
-            print("\nMostrando calendario...\n")
-            ImprimirCalendario(calendarios, materias, computo)
+            case "4":
+                mostrar_materias_bloques_y_profesores()
 
-        elif eleccion == "3":
-            subprocess.run('cls', shell=True)
-            config_sandwich = True
-            while config_sandwich:
-                print("La configuración de huecos en el horario permite que haya bloques vacíos disponibles entre clases")
-                print("\nDesea...\n")
-                print("1. Permitir huecos en el horario\n")
-                print("2. Desactivar huecos en el horario\n")
-                print("3. Volver\n")    
+            case "5":
+                work_zone()
 
-                eleccion_sandwich = input("Ingrese el número de la opción que desea probar: ")
-                if eleccion_sandwich == "1":
-                    global_sandwich = True
-                    subprocess.run('cls', shell=True)
-                    print("\nHorarios sandwich permitidos\n")
-                    input_ignore = input("Presiona Enter para continuar...")
-                    subprocess.run('cls', shell=True)  
-                elif eleccion_sandwich == "2":
-                    subprocess.run('cls', shell=True)
-                    global_sandwich = False
-                    print("\nHorarios sandwich desactivados\n")
-                    input_ignore = input("Presiona Enter para continuar...")
-                    subprocess.run('cls', shell=True)
-                elif eleccion_sandwich == "3":
-                    config_sandwich = False
-                    subprocess.run('cls', shell=True)
-                else:
-                    print("\nOpción no válida, por favor ingrese un número válido\n")
+            case "6":
+                work_zone()
 
-        elif eleccion == "4":
-            subprocess.run('cls', shell=True)
-            print("Cada calendario tiene ciertas necesidades que deben cumplirse cada semestre")
-            print(" -Un profesor no puede exceder 1 asignatura por semestre")
-            print(" -Cada asignatura debe cubrir exactamente su número requerido de bloques\n")
+            case "7":
+                exit_MainMenu()
 
-            print("Esta lista muestra un conteo de estas necesidades\n")
-            input_ignore = input("Presiona Enter para continuar...")
-            subprocess.run('cls', shell=True)
-            MateriasBloquesProfesores(materias)
+            case _:
+                opcion_invalida()
 
-        elif eleccion == "7":
-            subprocess.run('cls', shell=True)
-            print("\nSaliendo del programa...\n")
-            iniciado = False
-
-        else:
-            print("\nOpción no válida, por favor ingrese un número válido\n")
- 
+#Se inicializa la ejecución del código
 MainMenu()

@@ -1,7 +1,5 @@
-Se borraron los comentarios iniciales del código
+Se automatizó la parte de reiniciar calendario
 
-Se cambio el nombre de la función IDE() a MainMenu, ya que IDE significa Integrative Development Environment para evitar confusiones
+Se cambio el if else a un match case para mejor sintaxis
 
-Se añadio un comentario de LeoChamba, con cambios a desarrollar en el futuro cercano
-
-Se cambiaron los comentarios de pruebas a mostrar en el video
+Se encapsularon las opciones del match case del MainMenu
