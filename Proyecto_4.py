@@ -128,16 +128,16 @@ materias = [
 
     # Semestre 2, requieren 10 modulos
     {"materia": "Sistemas",     "bloques": 1, "computo": True, "semestre": 2, "profesor": profesores[2], "salon": "200"},
-    {"materia": "Algebraa",     "bloques": 1, "computo": False, "semestre": 2, "profesor": profesores[3], "salon": "200"},
-    {"materia": "Calculoa",     "bloques": 2, "computo": False, "semestre": 2, "profesor": profesores[4], "salon": "200"},
+    {"materia": "Algebra II",   "bloques": 1, "computo": False, "semestre": 2, "profesor": profesores[3], "salon": "200"},
+    {"materia": "Calculo II",   "bloques": 2, "computo": False, "semestre": 2, "profesor": profesores[4], "salon": "200"},
     {"materia": "Arquitectura", "bloques": 1, "computo": True,  "semestre": 2, "profesor": profesores[5], "salon": "200"},
     {"materia": "Electronica",  "bloques": 3, "computo": True, "semestre": 2, "profesor": profesores[6], "salon": "200"},
     {"materia": "Estadistica",  "bloques": 2, "computo": False, "semestre": 2, "profesor": profesores[7], "salon": "200"},
 
     # Semestre 3, requieren 10 bloques
-    {"materia": "Redesa",       "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[8], "salon": "210"},
-    {"materia": "Algoritmosa",  "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[9], "salon": "210"},
-    {"materia": "Proyectosa",   "bloques": 2, "computo": False, "semestre": 3, "profesor": profesores[0], "salon": "210"},
+    {"materia": "Redes II",       "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[8], "salon": "210"},
+    {"materia": "Algoritmos II",  "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[9], "salon": "210"},
+    {"materia": "Proyectos II",   "bloques": 2, "computo": False, "semestre": 3, "profesor": profesores[0], "salon": "210"},
     {"materia": "IA",           "bloques": 1, "computo": True,  "semestre": 3, "profesor": profesores[1], "salon": "210"},
     {"materia": "Seguridad",    "bloques": 3, "computo": True, "semestre": 3, "profesor": profesores[2], "salon": "210"},
     {"materia": "Compiladores", "bloques": 2, "computo": True,  "semestre": 3, "profesor": profesores[3], "salon": "210"}
@@ -472,7 +472,6 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
     #Se descarta la rama y se regresa al no tener más opciones
     return False
 
-###CHANGE COMMENT
 # Horario(...) inicializa las primeras revisiones antes de llamar a Horario_impl(...)
 # Tiene 4 parámetros:
 
@@ -673,7 +672,7 @@ def MateriasBloquesProfesores(materias):
     print("========================================================================")
     for m in materias:
         if m["semestre"] == 0:
-            print(f'semestre:{m["semestre"]}, materia: {m["materia"]}, profesor: {m["profesor"]["profesor"]}, bloques restantes:{m["bloques"]}')
+            print(f'semestre:{m["semestre"] + 1}, materia: {m["materia"]}, profesor: {m["profesor"]["profesor"]}, bloques restantes:{m["bloques"]}')
         else:
             continue
     print("\n")
@@ -683,7 +682,7 @@ def MateriasBloquesProfesores(materias):
 
     for m in materias:
         if m["semestre"] == 1:
-            print(f'semestre:{m["semestre"]}, materia: {m["materia"]}, profesor: {m["profesor"]["profesor"]}, bloques restantes:{m["bloques"]}')
+            print(f'semestre:{m["semestre"] + 1}, materia: {m["materia"]}, profesor: {m["profesor"]["profesor"]}, bloques restantes:{m["bloques"]}')
         else:
             continue
     print("\n")
@@ -693,7 +692,7 @@ def MateriasBloquesProfesores(materias):
 
     for m in materias:
         if m["semestre"] == 2:
-            print(f'semestre:{m["semestre"]}, materia: {m["materia"]}, profesor: {m["profesor"]["profesor"]}, bloques restantes:{m["bloques"]}')
+            print(f'semestre:{m["semestre"] + 1}, materia: {m["materia"]}, profesor: {m["profesor"]["profesor"]}, bloques restantes:{m["bloques"]}')
         else:
             continue
     print("\n")
@@ -703,7 +702,7 @@ def MateriasBloquesProfesores(materias):
 
     for m in materias:
         if m["semestre"] == 3:
-            print(f'semestre:{m["semestre"]}, materia: {m["materia"]}, profesor: {m["profesor"]["profesor"]}, bloques restantes:{m["bloques"]}')
+            print(f'semestre:{m["semestre"] + 1}, materia: {m["materia"]}, profesor: {m["profesor"]["profesor"]}, bloques restantes:{m["bloques"]}')
         else:
             continue    
     print("\n")
@@ -720,33 +719,35 @@ def ReiniciarCalendario():
 
 ## MainMenu() es una interfáz gráfica que sirve para para probar el calendario en todos sus aspectos para el video
 
+#Todos los puntos que falta si los cumple el algoritmo, sin embargo es más dificil demostrar que lo cumplen si no se realizan las demostraciones
+
 ## Prueba 1: Un semestre no puede tener más de una asignatura en el mismo bloque 
-## Demostracion: Mostrar el calendario
+## Demostracion: Mostrar el calendario (LISTO)
 
 ## Prueba 2: Cada asignatura debe cubrir exactamente su número requerido de bloques
-## Demostración: Generar lista de materias 
+## Demostración: Generar lista de materias (LISTO) 
 
 ## Prueba 3: Una asignatura no puede ser asignada mas de una vez el mismo dia
-## Demostración: generar calendario y mostra y ya
+## Demostración: generar calendario y mostra y ya (LISTO)
 
-## Prueba 4: Un profesor...
+## Prueba 4 (FALTA): Un profesor...
 ##      a. no puede estar asignado a más de una clase en el mismo bloque
 ##      b. no puede exceder 1 asignatura por semestre
 ##      c. debe respetar su disponibilidad
 ## Demostración: 
-##      a. Imprimir qué profe dio clase en que bloque
-##      b. Mostrar que asignatura dio en el semestre y cual fue
-##      c. Imprimir su calendario inicial de profesores y compararlo con el finalizado
+##      a. IMPRIMIR calendario de cada profe para saber que profe dio clase en que bloque (FALTA)
+##      b. Mostrar que asignatura dio en el semestre y cual fue (LISTO)
+##      c. Imprimir su calendario inicial de profesores y compararlo con el finalizado (FALTA)
 
 ## Prueba 5: Uso de laboratorios...
 ##      a. Máximo 2 asignaturas simultáneas que requieran cómputo
 ##      b. Solo asignaturas que lo requieran pueden ocuparlos
 ## Demostración: 
-##      a. Mostrar calendario inicial, final usado y que materias lo usaron cada bloque
-##      b. Imprimir las materias que requieran clases en los salones de cómputo 
+##      a. IMPRIMIR calendario de cómputo con el nombre de las materias que los usan en cada celda (FALTA)
+##      b. IMRPIMIR lista de asignaturas que requieren del salon de cómputo y verificar si lo requieren (FALTA) 
 
-## Prueba 6: Huecos en el horario (Sadnwich)
-##      a. Poder activarlo o desactivarlo
+## Prueba 6: Huecos en el horario (Sandwich)
+##      a. Poder activarlo o desactivarlo (LISTO)
 
 ##FALTA: demostrar varios de los puntos que pide el profesor para las pruebas
 def MainMenu():
