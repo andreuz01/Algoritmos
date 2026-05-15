@@ -1,0 +1,7 @@
+Se borraron los comentarios iniciales del código
+
+Se cambio el nombre de la función IDE() a MainMenu, ya que IDE significa Integrative Development Environment para evitar confusiones
+
+Se añadio un comentario de LeoChamba, con cambios a desarrollar en el futuro cercano
+
+Se cambiaron los comentarios de pruebas a mostrar en el video
