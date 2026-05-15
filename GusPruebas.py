@@ -10,7 +10,7 @@
 ##Gussugerencia: Esteticamente siento todo esta muy metido, hay codigo repetido por ejemplo en partes donde restauras cosas, seria posible hacerlo funcio y solo llamar en imp 
 
 import numpy as np
-import copy
+import copy ##PERMITE DEEPCOPY, deepcopy es para copiar objetos complejos como diccionarios y listas
 import subprocess
 subprocess.run('cls', shell=True) #Para limpiar la pantalla al inicio de cada ejecución del código
 
