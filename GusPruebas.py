@@ -315,7 +315,6 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
 #Tiene el parámetro de la lista de materias, la lista de salones de cómputo y el sandwich, puesto como predefinido que si acepte sandwich en caso de no pasarselo
 def Horario(calendarios,materias, computo, sandwich = True):
     
-
     #Se inicializa en la posición 0
     pos = 0
 
@@ -785,8 +784,6 @@ def MateriasBloquesProfesores(materias):
     print("\n")
     cosa = input("Presiona Enter para continuar...")
     subprocess.run('cls', shell=True)
-
-
 
 def ReiniciarCalendario():
     global calendarios, computo, profesores, materias, iteraciones
