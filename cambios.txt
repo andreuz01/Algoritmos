@@ -1,5 +1,4 @@
-Se automatizó la parte de reiniciar calendario
+Se comentó la función para debbugear el calendario en caso de dudas respecto a su funcionamiento
 
-Se cambio el if else a un match case para mejor sintaxis
-
-Se encapsularon las opciones del match case del MainMenu
+Se añadio una barra de progreso después de las iteraciones, fue hecha con chat pero la pueden borrar si quieren más rendimiento o no les gusta
+Dice "PRUEBA" para que lo busquen en el codigo

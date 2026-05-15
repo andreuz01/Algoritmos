@@ -303,3 +303,4 @@ materias = [
     {"materia": "Seguridad",    "bloques": 3, "computo": True, "semestre": 3, "profesor": profesores[2], "salon": "210"},
     {"materia": "Compiladores", "bloques": 2, "computo": True,  "semestre": 3, "profesor": profesores[3], "salon": "210"}
 ]
+

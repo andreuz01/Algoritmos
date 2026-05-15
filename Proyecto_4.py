@@ -1,8 +1,9 @@
-#LeoChamba: Documentar la función escrita por Chatgpt de imprimir_calendario_debug(...)
+#Borrar la parte de PRUEBA
 
 import numpy as np
-import copy ##PERMITE DEEPCOPY, deepcopy es para copiar objetos complejos como diccionarios y listas
+import copy #Permite deepcopy, sirve para copiar objetos complejos como diccionarios y listas
 import subprocess
+
 subprocess.run('cls', shell=True) #Para limpiar la pantalla al inicio de cada ejecución del código
 
 #---------------Documentación de las listas---------------
@@ -44,8 +45,8 @@ calendarios = [
 ##########################################################
 
 
-#----------Prueba 2----------
-#Tiempo aproximado (30 segs - 2 mins)
+#----------Prueba1----------
+#Tiempo aproximado (2 mins - 30 mins)
 profesores = [
     {"profesor": "Peniche", "horarios": [
         [True,  False,  False, True,  False],
@@ -109,37 +110,37 @@ profesores = [
 ]
 
 materias = [
-    # Semestre 0, lleva 10 modulos
+    # Semestre 0, requieren 12 bloques, o sea 3 vacíos
     {"materia": "Algebra",      "bloques": 1, "computo": False, "semestre": 0, "profesor": profesores[0], "salon": "151"},
-    {"materia": "Calculo",      "bloques": 2, "computo": False,  "semestre": 0, "profesor": profesores[1], "salon": "151"},
-    {"materia": "Redes",        "bloques": 3, "computo": True,  "semestre": 0, "profesor": profesores[2], "salon": "151"},
-    {"materia": "Programacion", "bloques": 2, "computo": True,  "semestre": 0, "profesor": profesores[3], "salon": "151"},
+    {"materia": "Calculo",      "bloques": 3, "computo": False,  "semestre": 0, "profesor": profesores[1], "salon": "151"},
+    {"materia": "Redes",        "bloques": 2, "computo": True,  "semestre": 0, "profesor": profesores[2], "salon": "151"},
+    {"materia": "Programacion", "bloques": 3, "computo": True,  "semestre": 0, "profesor": profesores[3], "salon": "151"},
     {"materia": "Ingles",       "bloques": 1, "computo": False, "semestre": 0, "profesor": profesores[4], "salon": "151"},
-    {"materia": "Etica",        "bloques": 1, "computo": False, "semestre": 0, "profesor": profesores[5], "salon": "151"},
+    {"materia": "Etica",        "bloques": 2, "computo": False, "semestre": 0, "profesor": profesores[5], "salon": "151"},
 
-    # Semestre 1, requiere 10 modulos
+    # Semestre 1, requieren 12 bloques, o sea 3 vacíos
     {"materia": "Algoritmos",   "bloques": 1, "computo": True, "semestre": 1, "profesor": profesores[6], "salon": "160"},
-    {"materia": "Proyectos",    "bloques": 2, "computo": False, "semestre": 1, "profesor": profesores[7], "salon": "160"},
-    {"materia": "Fisica",       "bloques": 1, "computo": False, "semestre": 1, "profesor": profesores[8], "salon": "160"},
-    {"materia": "BasesDatos",   "bloques": 3, "computo": True,  "semestre": 1, "profesor": profesores[9], "salon": "160"},
-    {"materia": "Circuitos",    "bloques": 2, "computo": True, "semestre": 1, "profesor": profesores[0], "salon": "160"},
-    {"materia": "Probabilidad", "bloques": 1, "computo": False, "semestre": 1, "profesor": profesores[1], "salon": "160"},
+    {"materia": "Proyectos",    "bloques": 3, "computo": False, "semestre": 1, "profesor": profesores[7], "salon": "160"},
+    {"materia": "Fisica",       "bloques": 2, "computo": False, "semestre": 1, "profesor": profesores[8], "salon": "160"},
+    {"materia": "BasesDatos",   "bloques": 1, "computo": True,  "semestre": 1, "profesor": profesores[9], "salon": "160"},
+    {"materia": "Circuitos",    "bloques": 3, "computo": True, "semestre": 1, "profesor": profesores[0], "salon": "160"},
+    {"materia": "Probabilidad", "bloques": 2, "computo": False, "semestre": 1, "profesor": profesores[1], "salon": "160"},
 
-    # Semestre 2, requieren 10 modulos
-    {"materia": "Sistemas",     "bloques": 1, "computo": True, "semestre": 2, "profesor": profesores[2], "salon": "200"},
-    {"materia": "Algebra II",     "bloques": 1, "computo": False, "semestre": 2, "profesor": profesores[3], "salon": "200"},
-    {"materia": "Calculo II",     "bloques": 2, "computo": False, "semestre": 2, "profesor": profesores[4], "salon": "200"},
-    {"materia": "Arquitectura", "bloques": 1, "computo": True,  "semestre": 2, "profesor": profesores[5], "salon": "200"},
-    {"materia": "Electronica",  "bloques": 3, "computo": True, "semestre": 2, "profesor": profesores[6], "salon": "200"},
-    {"materia": "Estadistica",  "bloques": 2, "computo": False, "semestre": 2, "profesor": profesores[7], "salon": "200"},
+    # Semestre 2, requieren 12 bloques, o sea 3 vacíos
+    {"materia": "Sistemas",     "bloques": 2, "computo": True, "semestre": 2, "profesor": profesores[2], "salon": "200"},
+    {"materia": "Algebraa",     "bloques": 1, "computo": False, "semestre": 2, "profesor": profesores[3], "salon": "200"},
+    {"materia": "Calculoa",     "bloques": 3, "computo": False, "semestre": 2, "profesor": profesores[4], "salon": "200"},
+    {"materia": "Arquitectura", "bloques": 2, "computo": True,  "semestre": 2, "profesor": profesores[5], "salon": "200"},
+    {"materia": "Electronica",  "bloques": 1, "computo": True, "semestre": 2, "profesor": profesores[6], "salon": "200"},
+    {"materia": "Estadistica",  "bloques": 3, "computo": False, "semestre": 2, "profesor": profesores[7], "salon": "200"},
 
-    # Semestre 3, requieren 10 bloques
-    {"materia": "Redes II",       "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[8], "salon": "210"},
-    {"materia": "Algoritmos II",  "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[9], "salon": "210"},
-    {"materia": "Proyectos II",   "bloques": 2, "computo": False, "semestre": 3, "profesor": profesores[0], "salon": "210"},
-    {"materia": "IA",           "bloques": 1, "computo": True,  "semestre": 3, "profesor": profesores[1], "salon": "210"},
-    {"materia": "Seguridad",    "bloques": 3, "computo": True, "semestre": 3, "profesor": profesores[2], "salon": "210"},
-    {"materia": "Compiladores", "bloques": 2, "computo": True,  "semestre": 3, "profesor": profesores[3], "salon": "210"}
+    # Semestre 3, requieren 12 bloques, o sea 3 vacíos
+    {"materia": "Redesa",       "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[8], "salon": "210"},
+    {"materia": "Algoritmosa",  "bloques": 2, "computo": True, "semestre": 3, "profesor": profesores[9], "salon": "210"},
+    {"materia": "Proyectosa",   "bloques": 3, "computo": False, "semestre": 3, "profesor": profesores[0], "salon": "210"},
+    {"materia": "IA",           "bloques": 2, "computo": True,  "semestre": 3, "profesor": profesores[1], "salon": "210"},
+    {"materia": "Seguridad",    "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[2], "salon": "210"},
+    {"materia": "Compiladores", "bloques": 3, "computo": True,  "semestre": 3, "profesor": profesores[3], "salon": "210"}
 ]
 
 
@@ -156,51 +157,65 @@ profesoresOG = copy.deepcopy(profesores)
 #-------------------Funciones y código--------------------
 
 #Función utilizada para debbugear e imprimir el calendario por medio de breakpoints
+#Toma la lista de calendarios, el semestre actual y el título, puesto a default como calendario pero se cambia a debug en la ejecución del código
 def imprimir_calendario_debug(calendarios, semestre, titulo="CALENDARIO"):
 
+    #Permite configurar si se va a imprimir o no
     global debbugear
     if not debbugear:
         return
     
     #Para borrar cada iteración
-    subprocess.run('cls', shell=True) #Para limpiar la pantalla al inicio de cada ejecución del código
+    subprocess.run('cls', shell=True)
 
+    #Se crea a lista de días
     dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
 
+    #toma el calendario del semestre a imprimir
     calendario = calendarios[semestre]["calendario"]
 
+    #Establece el ancho
     ancho = 18
     ancho_total = (ancho + 3) * len(dias) + 1
 
+    #Imprime la linea inicial
     print("\n" + "=" * ancho_total)
 
+    #Asigna el titulo y el semestre a una variable string
     texto_titulo = f" {titulo} | Semestre {calendarios[semestre]['semestre']} "
+    #Imprime el texto centrando este string tomando los parametros del ancho de donde se va a centrar y con que elemento lo va a centrar
     print(texto_titulo.center(ancho_total, "="))
 
+    #Imprime la siguiente línea debajo del título
     print("=" * ancho_total)
 
-    # Encabezados
+    # Encabezados (imprime los días)
     for dia in dias:
         print(f"| {dia.center(ancho)}", end=" ")
     print("|")
 
+    #Imprime la linea debajo de los encabezados
     print("=" * ancho_total)
 
-    # Filas
     for fila in range(calendario.shape[0]):
 
         for col in range(calendario.shape[1]):
 
+            #El texto a mostrar es el string del calendario fila, quitando espacios vacios adicionales u otros
             texto = str(calendario[fila][col]).strip()
 
+            #En caso de ser vacío lo convierte en los guiones
             # Mejor visualización de vacíos
             if texto == "empty":
                 texto = "-----"
 
+            #Finalmente imprime el texto con el espaciado correcto
             print(f"| {texto.center(ancho)}", end=" ")
 
+        #imprime la ultima barra de la fila y luego de esto continua a la siguiente fila
         print("|")
 
+    #Pone una barra al final y un espacio 
     print("=" * ancho_total)
     print()
 
@@ -220,6 +235,30 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
     #Contador de iteraciones/llamadas
     global iteraciones
     iteraciones += 1
+
+    #PRUEBA barra de progreso, MATA el rendimiento pero se ve bonito
+    
+    #Actualiza la barra solo cada cierta cantidad de iteraciones
+    #para no afectar demasiado el rendimiento
+    if iteraciones % 10000 == 0:
+
+        #Calcula el progreso de profundidad actual
+        porcentaje_pos = pos / 60
+
+        #Cantidad de bloques llenos de la barra (20 bloques)
+        bloques = int(porcentaje_pos * 20)
+
+        #Construcción visual de la barra
+        barra = "*" * bloques + "-" * (20 - bloques)
+
+        #Imprime sobre la misma línea
+        print(
+            f"\r[{barra}] "
+            f"Posición: {pos}/60 | "
+            f"Iteraciones: {iteraciones}",
+            end=""
+        )
+    #FIN PRUEBA
 
     n_materias = len(materias)
 
@@ -506,9 +545,12 @@ def Horario(calendarios, materias, computo, sandwich = True):
     # Se llama a Horario_impl(...) para generar por medio de bactracking el horario
     # Si retornó falso no encontró una posible solución, si retorna verdadero entonces generó de manera correcta el horario
     if not Horario_impl(pos, calendarios, materias, computo, sandwich):
+        subprocess.run('cls', shell=True) #limpias pantalla
         print("No es posible este calendario\n")
     else:
+        subprocess.run('cls', shell=True) #limpias pantalla
         print("Calendario generado exitosamente\n")
+    print(f'El número de iteraciones realizadas fueron: {iteraciones}\n')
 
     input_ignore = input("Presiona Enter para continuar...") ##Esperas el usuario ingrese una tecla
     subprocess.run('cls', shell=True) #limpias pantalla
@@ -622,12 +664,6 @@ def ImprimirCalendario(calendario, materias, computo):
 
             print("=" * ancho_total)
 
-#Modificar y reparar estas variables a la hora de imprimir
-#        print(f'\nHorarios Sandwiches se encuentra en: {global_sandwich}')
-#Mover esta variable a la generación del calendario
-#        print(f'\nEl número de iteraciones fueron: {iteraciones}\n')
-        
-
         input_ignore = input("\nPresiona Enter para continuar...")
         subprocess.run('cls', shell=True)
 
@@ -718,7 +754,10 @@ def MainMenu():
     def generar_calendario():
         subprocess.run('cls', shell=True)
         ReiniciarCalendario()
-        print("\nInicializando...\n")
+        if global_sandwich:
+            print(f"Inicializando generador de horario CON huecos en el horario\n")
+        else:
+            print(f"\nInicializando generador de horario SIN huecos en el horario\n")
         Horario(calendarios, materias, computo, global_sandwich)
     
     def ver_calendario():
@@ -737,6 +776,7 @@ def MainMenu():
         MateriasBloquesProfesores(materias)
     
     def configuracion_del_sandwich():
+        global global_sandwich
         config_sandwich = True
         while config_sandwich:
             subprocess.run('cls', shell=True)
@@ -751,14 +791,16 @@ def MainMenu():
                 case "1":
                     global_sandwich = True
                     subprocess.run('cls', shell=True)
-                    print("\nHuecos permitidos\n")
+                    print("Huecos permitidos\n")
+                    print("Regenere el horario para reflejar los cambios\n")
                     input("Presiona Enter para continuar...")
                     config_sandwich = False
                     subprocess.run('cls', shell=True)
                 case "2":
                     global_sandwich = False
                     subprocess.run('cls', shell=True)
-                    print("\nHuecos desactivados\n")  # <-- Bug corregido: "\Huecos" → "\nHuecos"
+                    print("Huecos desactivados\n")
+                    print("Regenere el horario para reflejar los cambios\n")
                     input("Presiona Enter para continuar...")
                     config_sandwich = False
                     subprocess.run('cls', shell=True)
@@ -768,11 +810,6 @@ def MainMenu():
                 case _:
                     opcion_invalida()    
 
-    def exit_MainMenu():
-        subprocess.run('cls', shell=True)
-        print("Ha salido del programa...\n")
-        iniciado = False
-
     def opcion_invalida():
         subprocess.run('cls', shell=True)
         print("\nOpción inválida, por favor ingrese un número válido\n")
@@ -780,10 +817,9 @@ def MainMenu():
 
     def work_zone():
         subprocess.run('cls', shell=True)
-        print("¯\_('u'))_/¯")
+        print(":P")
         input_ignore = input("\nZona en construcción, presiona Enter para continuar...")
 
-    global global_sandwich
     iniciado = True
 
     while iniciado:
@@ -792,7 +828,7 @@ def MainMenu():
         print("****************************Bienvenido al generador de horarios****************************")
         print("===========================================================================================")
 
-        print("\nPor favor ingrese la opciones que desees probar\n")
+        print("\nDentro del generador de horarios tiene un listado de opciones a elegir...\n")
         print("1. Generar horario\n")
         print("2. Ver horario\n")
         print("3. Configurar huecos en el horario\n")
@@ -824,7 +860,9 @@ def MainMenu():
                 work_zone()
 
             case "7":
-                exit_MainMenu()
+                subprocess.run('cls', shell=True)
+                print("Ha salido del programa...\n")
+                iniciado = False
 
             case _:
                 opcion_invalida()
