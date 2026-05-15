@@ -574,16 +574,16 @@ materias = [
 
     # Semestre 2, requieren 10 modulos
     {"materia": "Sistemas",     "bloques": 1, "computo": True, "semestre": 2, "profesor": profesores[2], "salon": "200"},
-    {"materia": "Algebraa",     "bloques": 1, "computo": False, "semestre": 2, "profesor": profesores[3], "salon": "200"},
-    {"materia": "Calculoa",     "bloques": 2, "computo": False, "semestre": 2, "profesor": profesores[4], "salon": "200"},
+    {"materia": "Algebra II",     "bloques": 1, "computo": False, "semestre": 2, "profesor": profesores[3], "salon": "200"},
+    {"materia": "Calculo II",     "bloques": 2, "computo": False, "semestre": 2, "profesor": profesores[4], "salon": "200"},
     {"materia": "Arquitectura", "bloques": 1, "computo": True,  "semestre": 2, "profesor": profesores[5], "salon": "200"},
     {"materia": "Electronica",  "bloques": 3, "computo": True, "semestre": 2, "profesor": profesores[6], "salon": "200"},
     {"materia": "Estadistica",  "bloques": 2, "computo": False, "semestre": 2, "profesor": profesores[7], "salon": "200"},
 
     # Semestre 3, requieren 10 bloques
-    {"materia": "Redesa",       "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[8], "salon": "210"},
-    {"materia": "Algoritmosa",  "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[9], "salon": "210"},
-    {"materia": "Proyectosa",   "bloques": 2, "computo": False, "semestre": 3, "profesor": profesores[0], "salon": "210"},
+    {"materia": "Redes II",       "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[8], "salon": "210"},
+    {"materia": "Algoritmos II",  "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[9], "salon": "210"},
+    {"materia": "Proyectos II",   "bloques": 2, "computo": False, "semestre": 3, "profesor": profesores[0], "salon": "210"},
     {"materia": "IA",           "bloques": 1, "computo": True,  "semestre": 3, "profesor": profesores[1], "salon": "210"},
     {"materia": "Seguridad",    "bloques": 3, "computo": True, "semestre": 3, "profesor": profesores[2], "salon": "210"},
     {"materia": "Compiladores", "bloques": 2, "computo": True,  "semestre": 3, "profesor": profesores[3], "salon": "210"}
@@ -652,38 +652,53 @@ def ImprimirCalendario(calendario, materias, computo):
                 # Consigue la materia hazlo el primero
                 for k in range(5):
                     texto = calendarios[z]["calendario"][i][k]
+                        # Limpiar el texto para mostrarlo bonito si no hay nada
+                    if texto == "empty".ljust(30) or texto == "empty":
+                        texto = "Vacío"
+                    elif texto == "vacío":
+                        texto = "Vacío"
+                    else:
+                        texto = texto.strip()
                     print(f"| {texto.ljust(ancho)}", end=" ")
                 print("|")
 
 
                 # Consigue el profesor
                 for k in range(5):
-                    ##Que materia es la que tenemos
-                    nombre = calendarios[z]["calendario"][i][k]
-
-                    profe = ""
+                 nombre = calendarios[z]["calendario"][i][k]
+                 profe = ""
+                
+                    # Solo buscar el profesor si no es una celda vacía
+                 if nombre not in ["empty".ljust(30), "empty", "vacío"]:
                     for m in materias:
-                        ##si es la que buscamos se guarda
-                        if m["materia"] == nombre:
+                        if m["materia"] == nombre.strip():
                             profe = m["profesor"]["profesor"]
                             break
-
-                    print(f"| {profe.ljust(ancho)}", end=" ")
+                
+                 if profe == "":
+                    profe = "-----"
+                    
+                 print(f"| {profe.ljust(ancho)}", end=" ")
                 print("|")
 
 
                 # Salon de computo
                 for k in range(5):
 
-                    nombre = calendarios[z]["calendario"][i][k]
-
-                    salon = ""
-                    for m in materias:
-                        if m["materia"] == nombre:
-                            salon = "Salon " + "Computo" if m["computo"] else "Salon " + m["salon"]
-                            break
-
-                    print(f"| {salon.ljust(ancho)}", end=" ")
+                     nombre = calendarios[z]["calendario"][i][k]
+                     salon = ""
+                
+                    # Solo buscar el salón si no es una celda vacía
+                     if nombre not in ["empty".ljust(30), "empty", "vacío"]:
+                        for m in materias:
+                            if m["materia"] == nombre.strip():
+                                salon = "Salón Computo" if m["computo"] else f"Salón {m['salon']}"
+                                break
+                
+                     if salon == "":
+                        salon = "-----"
+                    
+                     print(f"| {salon.ljust(ancho)}", end=" ")
                 print("|")
 
 
@@ -706,17 +721,17 @@ def ImprimirCalendario(calendario, materias, computo):
 
             for i in range(3):
 
-                for k in range(5):
+              for k in range(5):
 
-                    if(computo[z]["horarios"][i][k]):
+                if(computo[z]["horarios"][i][k]):
                          
                         texto = "Vacío"
-                    else:
+                else:
                         texto = "Ocupado"
 
-                    print(f"| {texto.ljust(ancho)}", end=" ")
+                print(f"| {texto.ljust(ancho)}", end=" ")
 
-                print("|")
+              print("|")
 
             print("=" * ancho_total)
 
@@ -726,6 +741,52 @@ def ImprimirCalendario(calendario, materias, computo):
 
         cosa = input("Presiona Enter para continuar...")
         subprocess.run('cls', shell=True)
+
+
+def MateriasBloquesProfesores(materias):
+    print("========================================================================")
+    print("*******************************Semestre 0*******************************")
+    print("========================================================================")
+    for m in materias:
+        if m["semestre"] == 0:
+            print(f'semestre:{m["semestre"]}, materia: {m["materia"]}, profesor: {m["profesor"]["profesor"]}, bloques restantes:{m["bloques"]}')
+        else:
+            continue
+    print("\n")
+    print("========================================================================")
+    print("*******************************Semestre 1*******************************")
+    print("========================================================================")
+
+    for m in materias:
+        if m["semestre"] == 1:
+            print(f'semestre:{m["semestre"]}, materia: {m["materia"]}, profesor: {m["profesor"]["profesor"]}, bloques restantes:{m["bloques"]}')
+        else:
+            continue
+    print("\n")
+    print("========================================================================")
+    print("*******************************Semestre 2*******************************")
+    print("========================================================================")
+
+    for m in materias:
+        if m["semestre"] == 2:
+            print(f'semestre:{m["semestre"]}, materia: {m["materia"]}, profesor: {m["profesor"]["profesor"]}, bloques restantes:{m["bloques"]}')
+        else:
+            continue
+    print("\n")
+    print("========================================================================")
+    print("*******************************Semestre 3*******************************")
+    print("========================================================================")
+
+    for m in materias:
+        if m["semestre"] == 3:
+            print(f'semestre:{m["semestre"]}, materia: {m["materia"]}, profesor: {m["profesor"]["profesor"]}, bloques restantes:{m["bloques"]}')
+        else:
+            continue    
+    print("\n")
+    cosa = input("Presiona Enter para continuar...")
+    subprocess.run('cls', shell=True)
+
+
 
 def ReiniciarCalendario():
     global calendarios, computo, profesores, materias, iteraciones
@@ -759,12 +820,13 @@ def IDE():
     print("===========================================================================================")
     print("****************************Bienvenido al generador de horarios****************************")
     print("===========================================================================================")
-    print("Por favor seleccion que opciones desaria probar\n")
+    print("Por favor seleccion que opciones desarias probar\n")
 
     print("0. Reiniciar Calendario\n")
     print("1. Generar calendario\n")
     print("2. Ver calendario generado\n")
     print("3. Permitir horarios sandwich\n")
+    print("4. Materias, bloques y profesores\n")
     print("7. Salir\n")
 
     eleccion = (input("Ingrese el número de la opción que desea probar: "))
@@ -817,6 +879,17 @@ def IDE():
                 subprocess.run('cls', shell=True)
             else:
                 print("\nOpción no válida, por favor ingrese un número válido\n")
+
+    elif eleccion == "4":
+        subprocess.run('cls', shell=True)
+        print("Cada calendario tiene ciertas necesidades que deben cumplirse cada semestre")
+        print(" -Un profesor no puede impartir mas de una materia en el mismo semestre")
+        print(" -Cada materia debe satisfacer sus bloques requeridos a la semana\n")
+
+        print("Esta lista muestra un conteo de estas necesidades\n")
+        cosa = input("Presiona Enter para continuar...")
+        subprocess.run('cls', shell=True)
+        MateriasBloquesProfesores(materias)
 
 
     elif eleccion == "7":
