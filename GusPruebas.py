@@ -751,7 +751,8 @@ def ReiniciarCalendario():
 ##Imprimir las materias de computo, mostrar calendario inicial, final usado y que materias lo usaron cada bloque
 
 ## Prueba 6 - Sandwich, ya implementado solo poder activarlo o desactivarlo
-def IDE(global_sandwich = True):
+def IDE():
+ global global_sandwich
  iniciado = True
 
  while iniciado:
@@ -802,7 +803,6 @@ def IDE(global_sandwich = True):
             if eleccion_sandwich == "1":
                 global_sandwich = True
                 subprocess.run('cls', shell=True)
-                global_sandwich = True
                 print("\nHorarios sandwich permitidos\n")
                 cosa = input("Presiona Enter para continuar...")
                 subprocess.run('cls', shell=True)  
@@ -829,5 +829,5 @@ def IDE(global_sandwich = True):
         print("\nOpción no válida, por favor ingrese un número válido\n")
  
 
-IDE(global_sandwich)
+IDE()
 
