@@ -1,4 +1,28 @@
-#Borrar la parte de PRUEBA
+# BUG1 el algoritmo no verifica que un profesor tenga disponibilidad suficiente para impartir sus materias
+# Agregar en Horario(), ANTES de llamar a Horario_impl()
+# Por ejemplo, si peniche tiene solo 1 modulo libre en su matriz de horarios, digamos solo tiene 1 True, y da 1 materia en cada año
+# El algoritmo automáticametne debería decir "wey qpd peniche no puede dar 4 bloques si solo tiene 1 hora libre wtf bro"
+# Entonces primero intentaría todo hasta darse cuetna despues de millones de intentos y decirse "wey creo que peniche nunca podía bro"
+
+# BUG2 IGUAL hay que verificar que hayan bloques de cómputo suficientes para las materias que requieran computo
+# Agregar en Horario(), ANTES de llamar a Horario_impl()
+# Suponiendo que hay 11 materias y cada una de ellas necesita 3 modulos de computo, se necesitarian un total de 33 modulos de computo, cuando realmente solo hay
+# dos salones de computo que pueden dar cada uno 15 modulos, o sea hay maximo para 30 modulos de computo
+# es algo que falta verificarse 
+
+# BUG3 Finalmente como son 6 materias que van de 1 a 3 bloques puede ser que en un semestre hayan 6 materias todas con 3 bloques que necesiten
+# Agregar en Horario(), ANTES de llamar a Horario_impl()
+# o sea que requieran 18 bloques cuando realmente solo hay espacio para 15 bloques en un semestre, revisar esto también con un chequeo.
+
+# FALTA checar la parte de pruebas y terminar de hacer todos los casos de prueba que dicen (FALTA)
+
+## Prueba 4a: IMPRIMIR qué profe dio clase en qué bloque
+## Crear función ImprimirCalendarioProfesor(calendarios, materias)
+## Mostrar para cada profesor en qué bloque y semestre aparece asignado
+
+## Prueba 4c: Comparar disponibilidad inicial vs final del profesor
+## Los horarios originales están guardados en profesoresOG (deepcopy al inicio)
+## Crear función ImprimirDisponibilidadProfesor(profesoresOG, profesores)
 
 import numpy as np
 import copy #Permite deepcopy, sirve para copiar objetos complejos como diccionarios y listas
@@ -44,9 +68,8 @@ calendarios = [
 # V     Insertar listas de profesores y materias aquí    V
 ##########################################################
 
-
-#----------Prueba 2----------
-#Tiempo aproximado (30 segs - 2 mins)
+#----------Prueba1----------
+#Tiempo aproximado (2 mins - 5 mins)
 profesores = [
     {"profesor": "Peniche", "horarios": [
         [True,  False,  False, True,  False],
@@ -110,39 +133,38 @@ profesores = [
 ]
 
 materias = [
-    # Semestre 0, lleva 10 modulos
+    # Semestre 0, requieren 12 bloques, o sea 3 vacíos
     {"materia": "Algebra",      "bloques": 1, "computo": False, "semestre": 0, "profesor": profesores[0], "salon": "151"},
-    {"materia": "Calculo",      "bloques": 2, "computo": False,  "semestre": 0, "profesor": profesores[1], "salon": "151"},
-    {"materia": "Redes",        "bloques": 3, "computo": True,  "semestre": 0, "profesor": profesores[2], "salon": "151"},
-    {"materia": "Programacion", "bloques": 2, "computo": True,  "semestre": 0, "profesor": profesores[3], "salon": "151"},
+    {"materia": "Calculo",      "bloques": 3, "computo": False,  "semestre": 0, "profesor": profesores[1], "salon": "151"},
+    {"materia": "Redes",        "bloques": 2, "computo": True,  "semestre": 0, "profesor": profesores[2], "salon": "151"},
+    {"materia": "Programacion", "bloques": 3, "computo": True,  "semestre": 0, "profesor": profesores[3], "salon": "151"},
     {"materia": "Ingles",       "bloques": 1, "computo": False, "semestre": 0, "profesor": profesores[4], "salon": "151"},
-    {"materia": "Etica",        "bloques": 1, "computo": False, "semestre": 0, "profesor": profesores[5], "salon": "151"},
+    {"materia": "Etica",        "bloques": 2, "computo": False, "semestre": 0, "profesor": profesores[5], "salon": "151"},
 
-    # Semestre 1, requiere 10 modulos
+    # Semestre 1, requieren 12 bloques, o sea 3 vacíos
     {"materia": "Algoritmos",   "bloques": 1, "computo": True, "semestre": 1, "profesor": profesores[6], "salon": "160"},
-    {"materia": "Proyectos",    "bloques": 2, "computo": False, "semestre": 1, "profesor": profesores[7], "salon": "160"},
-    {"materia": "Fisica",       "bloques": 1, "computo": False, "semestre": 1, "profesor": profesores[8], "salon": "160"},
-    {"materia": "BasesDatos",   "bloques": 3, "computo": True,  "semestre": 1, "profesor": profesores[9], "salon": "160"},
-    {"materia": "Circuitos",    "bloques": 2, "computo": True, "semestre": 1, "profesor": profesores[0], "salon": "160"},
-    {"materia": "Probabilidad", "bloques": 1, "computo": False, "semestre": 1, "profesor": profesores[1], "salon": "160"},
+    {"materia": "Proyectos",    "bloques": 3, "computo": False, "semestre": 1, "profesor": profesores[7], "salon": "160"},
+    {"materia": "Fisica",       "bloques": 2, "computo": False, "semestre": 1, "profesor": profesores[8], "salon": "160"},
+    {"materia": "BasesDatos",   "bloques": 1, "computo": True,  "semestre": 1, "profesor": profesores[9], "salon": "160"},
+    {"materia": "Circuitos",    "bloques": 3, "computo": True, "semestre": 1, "profesor": profesores[0], "salon": "160"},
+    {"materia": "Probabilidad", "bloques": 2, "computo": False, "semestre": 1, "profesor": profesores[1], "salon": "160"},
 
-    # Semestre 2, requieren 10 modulos
-    {"materia": "Sistemas",     "bloques": 1, "computo": True, "semestre": 2, "profesor": profesores[2], "salon": "200"},
-    {"materia": "Algebra II",   "bloques": 1, "computo": False, "semestre": 2, "profesor": profesores[3], "salon": "200"},
-    {"materia": "Calculo II",   "bloques": 2, "computo": False, "semestre": 2, "profesor": profesores[4], "salon": "200"},
-    {"materia": "Arquitectura", "bloques": 1, "computo": True,  "semestre": 2, "profesor": profesores[5], "salon": "200"},
-    {"materia": "Electronica",  "bloques": 3, "computo": True, "semestre": 2, "profesor": profesores[6], "salon": "200"},
-    {"materia": "Estadistica",  "bloques": 2, "computo": False, "semestre": 2, "profesor": profesores[7], "salon": "200"},
+    # Semestre 2, requieren 12 bloques, o sea 3 vacíos
+    {"materia": "Sistemas",     "bloques": 2, "computo": True, "semestre": 2, "profesor": profesores[2], "salon": "200"},
+    {"materia": "Algebra II",     "bloques": 1, "computo": False, "semestre": 2, "profesor": profesores[3], "salon": "200"},
+    {"materia": "Calculo II",     "bloques": 3, "computo": False, "semestre": 2, "profesor": profesores[4], "salon": "200"},
+    {"materia": "Arquitectura", "bloques": 2, "computo": True,  "semestre": 2, "profesor": profesores[5], "salon": "200"},
+    {"materia": "Electronica",  "bloques": 1, "computo": True, "semestre": 2, "profesor": profesores[6], "salon": "200"},
+    {"materia": "Estadistica",  "bloques": 3, "computo": False, "semestre": 2, "profesor": profesores[7], "salon": "200"},
 
-    # Semestre 3, requieren 10 bloques
+    # Semestre 3, requieren 12 bloques, o sea 3 vacíos
     {"materia": "Redes II",       "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[8], "salon": "210"},
-    {"materia": "Algoritmos II",  "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[9], "salon": "210"},
-    {"materia": "Proyectos II",   "bloques": 2, "computo": False, "semestre": 3, "profesor": profesores[0], "salon": "210"},
-    {"materia": "IA",           "bloques": 1, "computo": True,  "semestre": 3, "profesor": profesores[1], "salon": "210"},
-    {"materia": "Seguridad",    "bloques": 3, "computo": True, "semestre": 3, "profesor": profesores[2], "salon": "210"},
-    {"materia": "Compiladores", "bloques": 2, "computo": True,  "semestre": 3, "profesor": profesores[3], "salon": "210"}
+    {"materia": "Algoritmos II",  "bloques": 2, "computo": True, "semestre": 3, "profesor": profesores[9], "salon": "210"},
+    {"materia": "Proyectos II",   "bloques": 3, "computo": False, "semestre": 3, "profesor": profesores[0], "salon": "210"},
+    {"materia": "IA",           "bloques": 2, "computo": True,  "semestre": 3, "profesor": profesores[1], "salon": "210"},
+    {"materia": "Seguridad",    "bloques": 1, "computo": True, "semestre": 3, "profesor": profesores[2], "salon": "210"},
+    {"materia": "Compiladores", "bloques": 3, "computo": True,  "semestre": 3, "profesor": profesores[3], "salon": "210"}
 ]
-
 
 ##########################################################
 # ^     Insertar listas de profesores y materias aquí    ^
@@ -229,36 +251,36 @@ def imprimir_calendario_debug(calendarios, semestre, titulo="CALENDARIO"):
 # -sandwich: Variable que prohibe o permite el (materia - vacío - materia)
 
 def Horario_impl(pos, calendarios, materias, computo, sandwich):
-     
+
+    def print_progress_bar(iteraciones):
+        #Actualiza la barra solo cada cierta cantidad de iteraciones
+        #para no afectar demasiado el rendimiento
+        if iteraciones % 10000 == 0:
+
+            #Calcula el progreso de profundidad actual
+            porcentaje_pos = pos / 60
+
+            #Cantidad de bloques llenos de la barra (20 bloques)
+            bloques = int(porcentaje_pos * 20)
+
+            #Construcción visual de la barra
+            barra = "*" * bloques + "-" * (20 - bloques)
+
+            #Imprime sobre la misma línea
+            print(
+                f"\r[{barra}] "
+                f"Posición: {pos}/60 | "
+                f"Iteraciones: {iteraciones}",
+                end=""
+            )
+
     #----------Variables----------
 
     #Contador de iteraciones/llamadas
     global iteraciones
     iteraciones += 1
 
-    #PRUEBA barra de progreso, MATA el rendimiento pero se ve bonito
-    
-    #Actualiza la barra solo cada cierta cantidad de iteraciones
-    #para no afectar demasiado el rendimiento
-    if iteraciones % 10000 == 0:
-
-        #Calcula el progreso de profundidad actual
-        porcentaje_pos = pos / 60
-
-        #Cantidad de bloques llenos de la barra (20 bloques)
-        bloques = int(porcentaje_pos * 20)
-
-        #Construcción visual de la barra
-        barra = "*" * bloques + "-" * (20 - bloques)
-
-        #Imprime sobre la misma línea
-        print(
-            f"\r[{barra}] "
-            f"Posición: {pos}/60 | "
-            f"Iteraciones: {iteraciones}",
-            end=""
-        )
-    #FIN PRUEBA
+    print_progress_bar(iteraciones)
 
     n_materias = len(materias)
 
@@ -405,10 +427,10 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
                 if calendarios[semestre]["calendario"][i][col] == "empty".ljust(30):
                         conte += 1+i
             if cont == 2 and conte == 0:                 
-                #-----Backtacking evitando el sandwich-----
-                #Si no encontró una solución válida y retorno, hace el backtracking
+                #-----break evitando el sandwich-----
+                #Si no encontró una solución válida y retorno, rompe el ciclo de probar las materias
                 #Como se descarta la rama por el false, se tienen que devolver los valores del maestro, bloques faltantes y salon de cómputo
-                #Para hacer que haga backtrack y retroceda a su estado anterior
+                #Para hacer que retroceda a su estado anterior
 
                 #Le suma un bloque faltante a la materia
                 materias[num]["bloques"] += 1
@@ -424,7 +446,7 @@ def Horario_impl(pos, calendarios, materias, computo, sandwich):
                 #DEBUG imprimir el después de evitar el sandwich
                 imprimir_calendario_debug(calendarios, semestre, "DEBUG")
                 
-                return False
+                break ###FIX IMPORTANTÍSIMO, ANTES DESCARTABA LA RAMA ANTES DE PROBAR MATERIA-VACIO-VACIO, AHORA AHORRA MUCHAS ITERACIONES
 
         #Pasa a la siguiente llamada con la siguiente posición a rellenar, con los mismos calendarios, materias computo y variable del sandwich
         if Horario_impl(pos+1, calendarios, materias, computo, sandwich):

@@ -1,11 +1,20 @@
-Se ha inicializado correctamente el agendador de horarios
+Mostrando horario...
+
 ===========================================================================================
 ======================================== Semestre 2 =======================================
 | Lunes           | Martes          | Miercoles       | Jueves          | Viernes         |
 ===========================================================================================
 | Algebra         | Redes           | Calculo         | Ingles          | Calculo         |
+| Peniche         | Franklin        | Aylin           | Kenia           | Aylin           |
+| Salón 151       | Salón Computo   | Salón 151       | Salón 151       | Salón 151       |
+===========================================================================================
 | Calculo         | Etica           | Programacion    | Redes           | Programacion    |
-| Programacion    | vacío           | vacío           | Etica           | vacío           |
+| Aylin           | Vega            | Edson           | Franklin        | Edson           |
+| Salón 151       | Salón 151       | Salón Computo   | Salón Computo   | Salón Computo   |
+===========================================================================================
+| Programacion    | Vacío           | Vacío           | Etica           | Vacío           |
+| Edson           | -----           | -----           | Vega            | -----           |
+| Salón Computo   | -----           | -----           | Salón 151       | -----           |
 ===========================================================================================
 
 ===========================================================================================
@@ -13,26 +22,50 @@ Se ha inicializado correctamente el agendador de horarios
 | Lunes           | Martes          | Miercoles       | Jueves          | Viernes         |
 ===========================================================================================
 | Proyectos       | Algoritmos      | Proyectos       | Proyectos       | BasesDatos      |
-| vacío           | Fisica          | Fisica          | Probabilidad    | Circuitos       |
-| Probabilidad    | Circuitos       | Circuitos       | vacío           | vacío           |
+| Martinez        | Bolio           | Martinez        | Martinez        | Castro          |
+| Salón 160       | Salón Computo   | Salón 160       | Salón 160       | Salón Computo   |
+===========================================================================================
+| Vacío           | Fisica          | Fisica          | Probabilidad    | Circuitos       |
+| -----           | Lopez           | Lopez           | Aylin           | Peniche         |
+| -----           | Salón 160       | Salón 160       | Salón 160       | Salón Computo   |
+===========================================================================================
+| Probabilidad    | Circuitos       | Circuitos       | Vacío           | Vacío           |
+| Aylin           | Peniche         | Peniche         | -----           | -----           |
+| Salón 160       | Salón Computo   | Salón Computo   | -----           | -----           |
 ===========================================================================================
 
 ===========================================================================================
 ======================================== Semestre 6 =======================================
 | Lunes           | Martes          | Miercoles       | Jueves          | Viernes         |
 ===========================================================================================
-| Calculoa        | Algebraa        | Sistemas        | vacío           | Arquitectura    |
-| Estadistica     | Sistemas        | Arquitectura    | vacío           | Calculoa        |
-| vacío           | Calculoa        | Estadistica     | Electronica     | Estadistica     |
+| Calculo II      | Algebra II      | Sistemas        | Vacío           | Arquitectura    |
+| Kenia           | Edson           | Franklin        | -----           | Vega            |
+| Salón 200       | Salón 200       | Salón Computo   | -----           | Salón Computo   |
+===========================================================================================
+| Estadistica     | Sistemas        | Arquitectura    | Vacío           | Calculo II      |
+| Martinez        | Franklin        | Vega            | -----           | Kenia           |
+| Salón 200       | Salón Computo   | Salón Computo   | -----           | Salón 200       |
+===========================================================================================
+| Vacío           | Calculo II      | Estadistica     | Electronica     | Estadistica     |
+| -----           | Kenia           | Martinez        | Bolio           | Martinez        |
+| -----           | Salón 200       | Salón 200       | Salón Computo   | Salón 200       |
 ===========================================================================================
 
 ===========================================================================================
 ======================================== Semestre 8 =======================================
 | Lunes           | Martes          | Miercoles       | Jueves          | Viernes         |
 ===========================================================================================
-| Compiladores    | vacío           | Compiladores    | Proyectosa      | vacío           |
-| Algoritmosa     | IA              | Proyectosa      | Redesa          | vacío           |
-| Seguridad       | Algoritmosa     | IA              | Compiladores    | Proyectosa      |
+| Compiladores    | Vacío           | Compiladores    | Proyectos II    | Vacío           |
+| Edson           | -----           | Edson           | Peniche         | -----           |
+| Salón Computo   | -----           | Salón Computo   | Salón 210       | -----           |
+===========================================================================================
+| Algoritmos II   | IA              | Proyectos II    | Redes II        | Vacío           |
+| Castro          | Aylin           | Peniche         | Lopez           | -----           |
+| Salón Computo   | Salón Computo   | Salón 210       | Salón Computo   | -----           |
+===========================================================================================
+| Seguridad       | Algoritmos II   | IA              | Compiladores    | Proyectos II    |
+| Franklin        | Castro          | Aylin           | Edson           | Peniche         |
+| Salón Computo   | Salón Computo   | Salón Computo   | Salón Computo   | Salón 210       |
 ===========================================================================================
 
 ===========================================================================================
@@ -43,7 +76,6 @@ Se ha inicializado correctamente el agendador de horarios
 | Ocupado         | Ocupado         | Ocupado         | Ocupado         | Ocupado         |
 | Ocupado         | Ocupado         | Ocupado         | Ocupado         | Vacío           |
 ===========================================================================================
-
 ===========================================================================================
 ======================================== Computo 2 ========================================
 | Lunes           | Martes          | Miercoles       | Jueves          | Viernes         |
@@ -53,4 +85,4 @@ Se ha inicializado correctamente el agendador de horarios
 | Ocupado         | Ocupado         | Ocupado         | Ocupado         | Vacío           |
 ===========================================================================================
 
-El número de iteraciones fueron: 881177
+El número de iteraciones realizadas fueron: 881177

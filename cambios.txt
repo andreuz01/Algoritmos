@@ -1,1 +1,3 @@
-wea
+Se corrigio un bug que lo optimiza a niveles exponenciales
+
+Hay una lista de bugs y requisitos a realizar antes de grabar el video
