@@ -513,9 +513,6 @@ def Horario(calendarios, materias, computo, sandwich = True):
         print("Calendario generado exitosamente\n")
     print(f'El número de iteraciones realizadas fueron: {iteraciones}\n')
 
-    input_ignore = input("Presiona Enter para continuar...") ##Esperas el usuario ingrese una tecla
-    subprocess.run('cls', shell=True) #limpias pantalla
-
 def imprimir_horario(calendarios, materias):
         ancho = 15
         dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
@@ -854,6 +851,7 @@ def MainMenu():
             print(f"\nInicializando generador de horario SIN huecos en el horario\n")
         if verificar(materias):
             Horario(calendarios, materias, computo, global_sandwich)
+        
         input("Presiona Enter para continuar...")
         subprocess.run('cls', shell=True)
     
