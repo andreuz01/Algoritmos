@@ -13,6 +13,7 @@
 # BUG3 Finalmente como son 6 materias que van de 1 a 3 bloques puede ser que en un semestre hayan 6 materias todas con 3 bloques que necesiten
 # Agregar en Horario(), ANTES de llamar a Horario_impl()
 # o sea que requieran 18 bloques cuando realmente solo hay espacio para 15 bloques en un semestre, revisar esto también con un chequeo.
+#resuelto
 
 # FALTA checar la parte de pruebas y terminar de hacer todos los casos de prueba que dicen (FALTA)
 
@@ -23,6 +24,8 @@
 ## Prueba 4c: Comparar disponibilidad inicial vs final del profesor
 ## Los horarios originales están guardados en profesoresOG (deepcopy al inicio)
 ## Crear función ImprimirDisponibilidadProfesor(profesoresOG, profesores)
+
+## bug4 hay que mover las verificaciones a una funcion independiente antes de generar los horarios
 
 import numpy as np
 import copy #Permite deepcopy, sirve para copiar objetos complejos como diccionarios y listas
@@ -134,7 +137,7 @@ profesores = [
 
 materias = [
     # Semestre 0, requieren 12 bloques, o sea 3 vacíos
-    {"materia": "Algebra",      "bloques": 1, "computo": False, "semestre": 0, "profesor": profesores[0], "salon": "151"},
+    {"materia": "Algebra",      "bloques": 5, "computo": False, "semestre": 0, "profesor": profesores[0], "salon": "151"},
     {"materia": "Calculo",      "bloques": 3, "computo": False,  "semestre": 0, "profesor": profesores[1], "salon": "151"},
     {"materia": "Redes",        "bloques": 2, "computo": True,  "semestre": 0, "profesor": profesores[2], "salon": "151"},
     {"materia": "Programacion", "bloques": 3, "computo": True,  "semestre": 0, "profesor": profesores[3], "salon": "151"},
@@ -507,6 +510,34 @@ def Horario(calendarios, materias, computo, sandwich = True):
     #Se inicializa en la posición 0
     pos = 0
 
+    bloquesS0 = 0
+    bloquesS1 = 0
+    bloquesS2 = 0
+    bloquesS3 = 0
+    for i in range(len(materias)):
+        if materias[i]["semestre"] == 0:
+            bloquesS0 += materias[i]["bloques"]
+        if materias[i]["semestre"] == 1:
+            bloquesS1 += materias[i]["bloques"]
+        if materias[i]["semestre"] == 2:
+            bloquesS2 += materias[i]["bloques"]
+        if materias[i]["semestre"] == 3:
+            bloquesS3 += materias[i]["bloques"]    
+
+
+    if bloquesS0 > 15:
+        print("el segundo semestre semestretiene mas bloques que los permitidos")
+        return False
+    if bloquesS1 > 15:
+        print("el cuarto semestre semestretiene mas bloques que los permitidos")
+        return False
+    if bloquesS2 > 15:
+        print("el sexto semestre semestretiene mas bloques que los permitidos")
+        return False
+    if bloquesS3 > 15:
+        print("el octavo semestre semestretiene mas bloques que los permitidos")
+        return False
+
     ##Chequeo de materias por semestre para los for, checa cuantas materias hay en cada semestre
     semestre0 = 0
     semestre1 = 0
@@ -521,7 +552,6 @@ def Horario(calendarios, materias, computo, sandwich = True):
     semestre1 = semestre1 + semestre0
     semestre2 = semestre1 + semestre2
     semestre3 = semestre2 + semestre3
-
     #Se realizan las verificaciones para que un mismo profesor no tenga
     #más de 2 asignaturas en el mismo semestre
 
@@ -865,6 +895,7 @@ def MainMenu():
         match eleccion:
 
             case "1":
+                vericar()
                 generar_calendario()
 
             case "2":
