@@ -687,23 +687,6 @@ def imprimir_computo(computo):
             print("=" * ancho_total)
     print()
 
-def ls_materias_computo(materias):
-    materias_computo = []
-
-    for m in materias:
-        if m["computo"] == True:
-            materias_computo.append(m)
-        else:
-            continue
-
-    if len(materias_computo) < 1:
-        print(f'No hay materias que requieran del salón de cómputo dentro del listado')
-    else:
-        print("Lista de materias que requieren del salón de cómputo:\n")
-        for m in materias_computo:
-            print(f'Semestre: {m["semestre"] + 1:<3} Materia: {m["materia"]:<15} Bloques: {m["bloques"]:<3}')
-    print()
-
 def ReiniciarCalendario():
     global calendarios, computo, profesores, materias, iteraciones
     calendarios = copy.deepcopy(calendarioOG)
@@ -957,16 +940,14 @@ def MainMenu():
         print("-no puede exceder 1 asignatura por semestre")
         print("-debe respetar su disponibilidad\n")
         print("A continuación se muestra una lista de profesores a elegir para visualizar su disponibilidad y horario asignado\n")
+
         print("Desea...\n")
-
-        #ls_profesores()
-
-        #Recibir input
-        
         #Ver un profesor
-            #Si escoge ver un profesor, listar los profesores y preguntar, que profe desea ver
-        
         #Regresar
+
+        #Si escoge ver un profesor, listar los profesores y preguntar, que profe desea ver
+        #ls_profesores()
+        #Recibir input
 
         #Imprimir el horario original y luego el del profe
         #imprimir_horario_profeOG(...)
