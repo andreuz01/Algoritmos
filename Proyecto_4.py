@@ -1,33 +1,23 @@
-# BUG1 el algoritmo no verifica que un profesor tenga disponibilidad suficiente para impartir sus materias
-# Agregar en Horario(), ANTES de llamar a Horario_impl()
-# Por ejemplo, si peniche tiene solo 1 modulo libre en su matriz de horarios, digamos solo tiene 1 True, y da 1 materia en cada año
-# El algoritmo automáticametne debería decir "wey qpd peniche no puede dar 4 bloques si solo tiene 1 hora libre wtf bro"
-# Entonces primero intentaría todo hasta darse cuetna despues de millones de intentos y decirse "wey creo que peniche nunca podía bro"
-#Resuelto
+# <- FALTA ->
 
-# BUG2 IGUAL hay que verificar que hayan bloques de cómputo suficientes para las materias que requieran computo
-# Agregar en Horario(), ANTES de llamar a Horario_impl()
-# Suponiendo que hay 11 materias y cada una de ellas necesita 3 modulos de computo, se necesitarian un total de 33 modulos de computo, cuando realmente solo hay
-# dos salones de computo que pueden dar cada uno 15 modulos, o sea hay maximo para 30 modulos de computo
-# es algo que falta verificarse 
-#Resuelto
-
-# BUG3 Finalmente como son 6 materias que van de 1 a 3 bloques puede ser que en un semestre hayan 6 materias todas con 3 bloques que necesiten
-# Agregar en Horario(), ANTES de llamar a Horario_impl()
-# o sea que requieran 18 bloques cuando realmente solo hay espacio para 15 bloques en un semestre, revisar esto también con un chequeo.
-#Resuelto
-
-# FALTA checar la parte de pruebas y terminar de hacer todos los casos de prueba que dicen (FALTA)
-
-## Prueba 4a: IMPRIMIR qué profe dio clase en qué bloque
-## Crear función ImprimirCalendarioProfesor(calendarios, materias)
-## Mostrar para cada profesor en qué bloque y semestre aparece asignado
-
-## Prueba 4c: Comparar disponibilidad inicial vs final del profesor
-## Los horarios originales están guardados en profesoresOG (deepcopy al inicio)
-## Crear función ImprimirDisponibilidadProfesor(profesoresOG, profesores)
-
-## bug4 hay que mover las verificaciones a una funcion independiente antes de generar los horarios
+# Prueba 4a y 4c: Horario y disponibilidad de un profesor
+# Completar la función mostrar_calendario_profesor() en MainMenu()
+# El flujo debe ser:
+#
+# 1. Mostrar lista de profesores numerada para que el usuario elija
+#    Crear función ls_profesores(profesores) que imprima cada profesor con su índice
+#
+# 2. Recibir input del usuario con el número del profesor elegido
+#
+# 3. Imprimir disponibilidad ORIGINAL del profesor (antes de generar el horario)
+#    Crear función imprimir_horario_profeOG(profesoresOG, indice)
+#    Los horarios originales están guardados en profesoresOG (deepcopy al inicio del archivo)
+#    True = disponible, False = no disponible
+#
+# 4. Imprimir el horario ASIGNADO del profesor (después de generar el horario)
+#    Crear función imprimir_horario_profe(calendarios, materias, nombre_profesor)
+#    Recorrer todos los calendarios y buscar en qué bloques aparece el nombre del profesor
+#    Esto demuestra 4a (no está en dos bloques a la vez) y 4c (respeta su disponibilidad original)
 
 import numpy as np
 import copy #Permite deepcopy, sirve para copiar objetos complejos como diccionarios y listas
@@ -741,7 +731,7 @@ def ReiniciarCalendario():
 ##      a. Poder activarlo o desactivarlo (LISTO)
 
 def MainMenu():
-    def verificar():
+    def verificar(materias):
 
         #contar el numero de bloques por semestre
         bloquesS0 = 0
@@ -760,16 +750,16 @@ def MainMenu():
 
         #comprobamos que el numero de bloques no supere a los 15 modulos
         if bloquesS0 > 15:
-            print("Error el segundo semestre semestretiene mas bloques que los permitidos")
+            print("Error. El segundo semestre semestre tiene mas bloques que los permitidos\n")
             return False
         if bloquesS1 > 15:
-            print("Error el cuarto semestre semestretiene mas bloques que los permitidos")
+            print("Error. El cuarto semestre semestre tiene mas bloques que los permitidos\n")
             return False
         if bloquesS2 > 15:
-            print("Error el sexto semestre semestretiene mas bloques que los permitidos")
+            print("Error. El sexto semestre semestre tiene mas bloques que los permitidos\n")
             return False
         if bloquesS3 > 15:
-            print("Error el octavo semestre semestretiene mas bloques que los permitidos")
+            print("Error. El octavo semestre semestre tiene mas bloques que los permitidos\n")
             return False
 
         #comprobar que el profe pueda dar sus horas
@@ -788,7 +778,7 @@ def MainMenu():
                     bloquesprofesor += materias[z]["bloques"]
             
             if bloquesdisponibles < bloquesprofesor:
-                print(f"Error el maestro {materias[i]["profesor"]["profesor"]} tiene muchos bloques para su disponibilidad")
+                print(f"Error. El maestro {materias[i]["profesor"]["profesor"]} tiene muchos bloques para su disponibilidad\n")
                 return False
 
         #contamos cuantos bloques tienen las materias que necesitan computo si superan los dos salones es imposible
@@ -797,7 +787,7 @@ def MainMenu():
             if materias[i]["computo"]:
                 bloquescomputo += materias[i]["bloques"]
         if bloquescomputo > 30:
-            print("Error muchas materias requieren computo")
+            print("Error. Muchas materias requieren computo\n")
             return False
 
         ##Chequeo de materias por semestre para los for, checa cuantas materias hay en cada semestre
@@ -827,32 +817,32 @@ def MainMenu():
                     continue
                 #Si el profesor de la materia z es igual al de la materia j dentro del semestre, retorna falso 
                 if materias[z]["profesor"]== materias[j]["profesor"]:
-                    print("Error el profesor tiene dos materias en el segundo semestre")
+                    print("Error. El profesor tiene dos materias en el segundo semestre\n")
                     return False
         for z in range (semestre0,semestre1):
             for j in range (semestre0,semestre1):
                 if z==j:
                     continue
                 if materias[z]["profesor"]== materias[j]["profesor"]:
-                    print("Error el profesor tiene dos materias en el cuarto semestre")
+                    print("Error. El profesor tiene dos materias en el cuarto semestre\n")
                     return False
         for z in range (semestre1,semestre2):
             for j in range (semestre1,semestre2):
                 if z==j:
                     continue
                 if materias[z]["profesor"]== materias[j]["profesor"]:
-                    print("Error el profesor tiene dos materias en el sexto semestre")
+                    print("Error. El profesor tiene dos materias en el sexto semestre\n")
                     return False
         for z in range (semestre2,semestre3):
             for j in range (semestre2, semestre3):
                 if z==j:
                     continue
                 if materias[z]["profesor"]== materias[j]["profesor"]:
-                    print("Error el profesor tiene dos materias en el octavo semestre")
+                    print("Error. El profesor tiene dos materias en el octavo semestre\n")
                     return False
             
         #Se realiza la llamada a la implementación de la función dentro del if    
-        print(f'No existen profesores repetidos ni bloques de mas\n\nSe ha inicializado correctamente el agendador de horarios\n')
+        print(f'No existen profesores repetidos en el semestre ni bloques de más\n\nSe ha inicializado correctamente el agendador de horarios\n')
         return True
 
     def generar_calendario():
@@ -862,7 +852,7 @@ def MainMenu():
             print(f"Inicializando generador de horario CON huecos en el horario\n")
         else:
             print(f"\nInicializando generador de horario SIN huecos en el horario\n")
-        if verificar():
+        if verificar(materias):
             Horario(calendarios, materias, computo, global_sandwich)
         input("Presiona Enter para continuar...")
         subprocess.run('cls', shell=True)
