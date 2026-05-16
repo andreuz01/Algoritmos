@@ -1,31 +1,23 @@
-# BUG1 el algoritmo no verifica que un profesor tenga disponibilidad suficiente para impartir sus materias
-# Agregar en Horario(), ANTES de llamar a Horario_impl()
-# Por ejemplo, si peniche tiene solo 1 modulo libre en su matriz de horarios, digamos solo tiene 1 True, y da 1 materia en cada año
-# El algoritmo automáticametne debería decir "wey qpd peniche no puede dar 4 bloques si solo tiene 1 hora libre wtf bro"
-# Entonces primero intentaría todo hasta darse cuetna despues de millones de intentos y decirse "wey creo que peniche nunca podía bro"
+# <- FALTA ->
 
-# BUG2 IGUAL hay que verificar que hayan bloques de cómputo suficientes para las materias que requieran computo
-# Agregar en Horario(), ANTES de llamar a Horario_impl()
-# Suponiendo que hay 11 materias y cada una de ellas necesita 3 modulos de computo, se necesitarian un total de 33 modulos de computo, cuando realmente solo hay
-# dos salones de computo que pueden dar cada uno 15 modulos, o sea hay maximo para 30 modulos de computo
-# es algo que falta verificarse 
-
-# BUG3 Finalmente como son 6 materias que van de 1 a 3 bloques puede ser que en un semestre hayan 6 materias todas con 3 bloques que necesiten
-# Agregar en Horario(), ANTES de llamar a Horario_impl()
-# o sea que requieran 18 bloques cuando realmente solo hay espacio para 15 bloques en un semestre, revisar esto también con un chequeo.
-#resuelto
-
-# FALTA checar la parte de pruebas y terminar de hacer todos los casos de prueba que dicen (FALTA)
-
-## Prueba 4a: IMPRIMIR qué profe dio clase en qué bloque
-## Crear función ImprimirCalendarioProfesor(calendarios, materias)
-## Mostrar para cada profesor en qué bloque y semestre aparece asignado
-
-## Prueba 4c: Comparar disponibilidad inicial vs final del profesor
-## Los horarios originales están guardados en profesoresOG (deepcopy al inicio)
-## Crear función ImprimirDisponibilidadProfesor(profesoresOG, profesores)
-
-## bug4 hay que mover las verificaciones a una funcion independiente antes de generar los horarios
+# Prueba 4a y 4c: Horario y disponibilidad de un profesor
+# Completar la función mostrar_calendario_profesor() en MainMenu()
+# El flujo debe ser:
+#
+# 1. Mostrar lista de profesores numerada para que el usuario elija
+#    Crear función ls_profesores(profesores) que imprima cada profesor con su índice
+#
+# 2. Recibir input del usuario con el número del profesor elegido
+#
+# 3. Imprimir disponibilidad ORIGINAL del profesor (antes de generar el horario)
+#    Crear función imprimir_horario_profeOG(profesoresOG, indice)
+#    Los horarios originales están guardados en profesoresOG (deepcopy al inicio del archivo)
+#    True = disponible, False = no disponible
+#
+# 4. Imprimir el horario ASIGNADO del profesor (después de generar el horario)
+#    Crear función imprimir_horario_profe(calendarios, materias, nombre_profesor)
+#    Recorrer todos los calendarios y buscar en qué bloques aparece el nombre del profesor
+#    Esto demuestra 4a (no está en dos bloques a la vez) y 4c (respeta su disponibilidad original)
 
 import numpy as np
 import copy #Permite deepcopy, sirve para copiar objetos complejos como diccionarios y listas
@@ -510,88 +502,6 @@ def Horario(calendarios, materias, computo, sandwich = True):
     #Se inicializa en la posición 0
     pos = 0
 
-    bloquesS0 = 0
-    bloquesS1 = 0
-    bloquesS2 = 0
-    bloquesS3 = 0
-    for i in range(len(materias)):
-        if materias[i]["semestre"] == 0:
-            bloquesS0 += materias[i]["bloques"]
-        if materias[i]["semestre"] == 1:
-            bloquesS1 += materias[i]["bloques"]
-        if materias[i]["semestre"] == 2:
-            bloquesS2 += materias[i]["bloques"]
-        if materias[i]["semestre"] == 3:
-            bloquesS3 += materias[i]["bloques"]    
-
-
-    if bloquesS0 > 15:
-        print("el segundo semestre semestretiene mas bloques que los permitidos")
-        return False
-    if bloquesS1 > 15:
-        print("el cuarto semestre semestretiene mas bloques que los permitidos")
-        return False
-    if bloquesS2 > 15:
-        print("el sexto semestre semestretiene mas bloques que los permitidos")
-        return False
-    if bloquesS3 > 15:
-        print("el octavo semestre semestretiene mas bloques que los permitidos")
-        return False
-
-    ##Chequeo de materias por semestre para los for, checa cuantas materias hay en cada semestre
-    semestre0 = 0
-    semestre1 = 0
-    semestre2 = 0
-    semestre3 = 0
-    for z in range(len(materias)):
-        if materias[z]["semestre"] == 0: semestre0 += 1
-        if materias[z]["semestre"] == 1: semestre1 += 1
-        if materias[z]["semestre"] == 2: semestre2 += 1
-        if materias[z]["semestre"] == 3: semestre3 += 1
-    ##Los vuelve sus puntos finales 
-    semestre1 = semestre1 + semestre0
-    semestre2 = semestre1 + semestre2
-    semestre3 = semestre2 + semestre3
-    #Se realizan las verificaciones para que un mismo profesor no tenga
-    #más de 2 asignaturas en el mismo semestre
-
-    #Cada ciclo for revisa un semestre distinto, por los rangos de índices establecidos en las materias de cada semestre
-    #Va verificando que el mismo profesor no se repita más de 1 vez en cada semestre
-    
-    for z in range (0,semestre0):
-        for j in range (0,semestre0):
-            #Si ambas son la misma materia a ser comparada se continua a la siguiente iteracion
-            if z==j:
-                 continue
-            #Si el profesor de la materia z es igual al de la materia j dentro del semestre, retorna falso 
-            if materias[z]["profesor"]== materias[j]["profesor"]:
-                 print("El profesor tiene dos materias en el segundo semestre")
-                 return False
-    for z in range (semestre0,semestre1):
-        for j in range (semestre0,semestre1):
-            if z==j:
-                 continue
-            if materias[z]["profesor"]== materias[j]["profesor"]:
-                 print("El profesor tiene dos materias en el cuarto semestre")
-                 return False
-    for z in range (semestre1,semestre2):
-        for j in range (semestre1,semestre2):
-            if z==j:
-                 continue
-            if materias[z]["profesor"]== materias[j]["profesor"]:
-                 print("El profesor tiene dos materias en el sexto semestre")
-                 return False
-    for z in range (semestre2,semestre3):
-        for j in range (semestre2, semestre3):
-            if z==j:
-                 continue
-            if materias[z]["profesor"]== materias[j]["profesor"]:
-                 print("El profesor tiene dos materias en el octavo semestre")
-                 return False
-        
-    #Se realiza la llamada a la implementación de la función dentro del if
-        
-    print(f'No existen profesores repetidos\n\nSe ha inicializado correctamente el agendador de horarios\n')
 
     # Se llama a Horario_impl(...) para generar por medio de bactracking el horario
     # Si retornó falso no encontró una posible solución, si retorna verdadero entonces generó de manera correcta el horario
@@ -602,9 +512,6 @@ def Horario(calendarios, materias, computo, sandwich = True):
         subprocess.run('cls', shell=True) #limpias pantalla
         print("Calendario generado exitosamente\n")
     print(f'El número de iteraciones realizadas fueron: {iteraciones}\n')
-
-    input_ignore = input("Presiona Enter para continuar...") ##Esperas el usuario ingrese una tecla
-    subprocess.run('cls', shell=True) #limpias pantalla
 
 def imprimir_horario(calendarios, materias):
         ancho = 15
@@ -821,7 +728,120 @@ def ReiniciarCalendario():
 ##      a. Poder activarlo o desactivarlo (LISTO)
 
 def MainMenu():
-    
+    def verificar(materias):
+
+        #contar el numero de bloques por semestre
+        bloquesS0 = 0
+        bloquesS1 = 0
+        bloquesS2 = 0
+        bloquesS3 = 0
+        for i in range(len(materias)):
+            if materias[i]["semestre"] == 0:
+                bloquesS0 += materias[i]["bloques"]
+            if materias[i]["semestre"] == 1:
+                bloquesS1 += materias[i]["bloques"]
+            if materias[i]["semestre"] == 2:
+                bloquesS2 += materias[i]["bloques"]
+            if materias[i]["semestre"] == 3:
+                bloquesS3 += materias[i]["bloques"]    
+
+        #comprobamos que el numero de bloques no supere a los 15 modulos
+        if bloquesS0 > 15:
+            print("Error. El segundo semestre semestre tiene mas bloques que los permitidos\n")
+            return False
+        if bloquesS1 > 15:
+            print("Error. El cuarto semestre semestre tiene mas bloques que los permitidos\n")
+            return False
+        if bloquesS2 > 15:
+            print("Error. El sexto semestre semestre tiene mas bloques que los permitidos\n")
+            return False
+        if bloquesS3 > 15:
+            print("Error. El octavo semestre semestre tiene mas bloques que los permitidos\n")
+            return False
+
+        #comprobar que el profe pueda dar sus horas
+        for i in range(len(materias)):
+            bloquesdisponibles = 0
+            for x in range(3):
+                for y in range(5):
+                    #contamos el numero de bloques disponibles del maestro
+                    if materias[i]["profesor"]["horarios"][x][y] == True:
+                        bloquesdisponibles += 1
+
+            bloquesprofesor = materias[i]["bloques"]
+            for z in range(i+1,len(materias)):
+                #contamos todos los bloques del maestro
+                if materias[i]["profesor"] == materias[z]["profesor"]:
+                    bloquesprofesor += materias[z]["bloques"]
+            
+            if bloquesdisponibles < bloquesprofesor:
+                print(f"Error. El maestro {materias[i]["profesor"]["profesor"]} tiene muchos bloques para su disponibilidad\n")
+                return False
+
+        #contamos cuantos bloques tienen las materias que necesitan computo si superan los dos salones es imposible
+        bloquescomputo = 0
+        for i in range(len(materias)):
+            if materias[i]["computo"]:
+                bloquescomputo += materias[i]["bloques"]
+        if bloquescomputo > 30:
+            print("Error. Muchas materias requieren computo\n")
+            return False
+
+        ##Chequeo de materias por semestre para los for, checa cuantas materias hay en cada semestre
+        semestre0 = 0
+        semestre1 = 0
+        semestre2 = 0
+        semestre3 = 0
+        for z in range(len(materias)):
+            if materias[z]["semestre"] == 0: semestre0 += 1
+            if materias[z]["semestre"] == 1: semestre1 += 1
+            if materias[z]["semestre"] == 2: semestre2 += 1
+            if materias[z]["semestre"] == 3: semestre3 += 1
+        ##Los vuelve sus puntos finales 
+        semestre1 = semestre1 + semestre0
+        semestre2 = semestre1 + semestre2
+        semestre3 = semestre2 + semestre3
+        #Se realizan las verificaciones para que un mismo profesor no tenga
+        #más de 2 asignaturas en el mismo semestre
+
+        #Cada ciclo for revisa un semestre distinto, por los rangos de índices establecidos en las materias de cada semestre
+        #Va verificando que el mismo profesor no se repita más de 1 vez en cada semestre
+        
+        for z in range (0,semestre0):
+            for j in range (0,semestre0):
+                #Si ambas son la misma materia a ser comparada se continua a la siguiente iteracion
+                if z==j:
+                    continue
+                #Si el profesor de la materia z es igual al de la materia j dentro del semestre, retorna falso 
+                if materias[z]["profesor"]== materias[j]["profesor"]:
+                    print("Error. El profesor tiene dos materias en el segundo semestre\n")
+                    return False
+        for z in range (semestre0,semestre1):
+            for j in range (semestre0,semestre1):
+                if z==j:
+                    continue
+                if materias[z]["profesor"]== materias[j]["profesor"]:
+                    print("Error. El profesor tiene dos materias en el cuarto semestre\n")
+                    return False
+        for z in range (semestre1,semestre2):
+            for j in range (semestre1,semestre2):
+                if z==j:
+                    continue
+                if materias[z]["profesor"]== materias[j]["profesor"]:
+                    print("Error. El profesor tiene dos materias en el sexto semestre\n")
+                    return False
+        for z in range (semestre2,semestre3):
+            for j in range (semestre2, semestre3):
+                if z==j:
+                    continue
+                if materias[z]["profesor"]== materias[j]["profesor"]:
+                    print("Error. El profesor tiene dos materias en el octavo semestre\n")
+                    return False
+            
+        #Se realiza la llamada a la implementación de la función dentro del if    
+        print(f'No existen profesores repetidos en el semestre ni bloques de más\n\nSe ha inicializado correctamente el agendador de horarios\n')
+        return True
+
     def generar_calendario():
         subprocess.run('cls', shell=True)
         ReiniciarCalendario()
@@ -829,7 +849,11 @@ def MainMenu():
             print(f"Inicializando generador de horario CON huecos en el horario\n")
         else:
             print(f"\nInicializando generador de horario SIN huecos en el horario\n")
-        Horario(calendarios, materias, computo, global_sandwich)
+        if verificar(materias):
+            Horario(calendarios, materias, computo, global_sandwich)
+        
+        input("Presiona Enter para continuar...")
+        subprocess.run('cls', shell=True)
     
     def ver_calendario():
         subprocess.run('cls', shell=True)
@@ -972,7 +996,6 @@ def MainMenu():
         match eleccion:
 
             case "1":
-                #vericar()
                 generar_calendario()
 
             case "2":
