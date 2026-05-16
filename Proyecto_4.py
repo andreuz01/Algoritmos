@@ -23,8 +23,6 @@ import numpy as np
 import copy #Permite deepcopy, sirve para copiar objetos complejos como diccionarios y listas
 import subprocess
 
-from pyparsing import col
-
 subprocess.run('cls', shell=True) #Para limpiar la pantalla al inicio de cada ejecución del código
 
 #---------------Documentación de las listas---------------
@@ -594,197 +592,45 @@ def imprimir_horario(calendarios, materias):
                 print("=" * ancho_total)
             print()
 
-
-def ImprimirCalendarioProfesor(eleccion):
-    # Obtener el profesor seleccionado
-    ##Antes 
-    profesorA = profesoresOG[eleccion]
-    horarioA = profesorA["horarios"]
-   
-   ##materias[num]["profesor"]["horarios"][row][col] = False
-
-    ##Después
-    global profesor
-    profesor = profesores[eleccion]
-    nombre = profesor["profesor"]
-    horario = profesor["horarios"]
-    
-
-
-    ##Antes
-    # Días y horas para el encabezado
-    dias = ["Hora", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
-    horas = ["8:00-9:00", "9:00-10:00", "10:00-11:00"]
-    
-    # Calcular ancho de la tabla
-    ancho = 12
-    ancho_total = (ancho + 3) * len(dias) + 1
-    
-    print("\n" + "=" * ancho_total)
-    texto_titulo = f" Calendario Original de {nombre} "
-    print(texto_titulo.center(ancho_total, "="))
-    print("=" * ancho_total)
-    
-    # Encabezados de días (incluyendo "Hora")
-    for dia in dias:
-        print(f"| {dia.center(ancho)}", end=" ")
-    print("|")
-    print("=" * ancho_total)
-    
-    # Imprimir filas (horas)
-    for i in range(3):
-        # Imprimir la hora como primera columna
-        print(f"| {horas[i].center(ancho)}", end=" ")
-        
-        # Imprimir disponibilidad para cada día
-        for j in range(5):
-            if horarioA[i][j]:
-                texto = "Disponible"
-            else:
-                texto = "Ocupado"
-            print(f"| {texto.center(ancho)}", end=" ")
-        print("|")
-        print("=" * ancho_total)
-    print()
-
-
-    ##Después
-    dias = ["Hora", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
-    horas = ["8:00-9:00", "9:00-10:00", "10:00-11:00"]
-    
-    # Calcular ancho de la tabla
-    ancho = 12
-    ancho_total = (ancho + 3) * len(dias) + 1
-    
-    print("\n" + "=" * ancho_total)
-    texto_titulo = f" Calendario Completado de {nombre} "
-    print(texto_titulo.center(ancho_total, "="))
-    print("=" * ancho_total)
-    
-    # Encabezados de días (incluyendo "Hora")
-    for dia in dias:
-        print(f"| {dia.center(ancho)}", end=" ")
-    print("|")
-    print("=" * ancho_total)
-    
-    # Imprimir filas (horas)
-    for i in range(3):
-        # Imprimir la hora como primera columna
-        print(f"| {horas[i].center(ancho)}", end=" ")
-        
-        # Imprimir disponibilidad para cada día
-        for j in range(5):
-            if horario[i][j]:
-                texto = "Disponible"
-            else:
-                texto = "Ocupado"
-            print(f"| {texto.center(ancho)}", end=" ")
-        print("|")
-        print("=" * ancho_total)
-    print()
-
-
-
-    input("Presione Enter para continuar...")
-    subprocess.run('cls', shell=True)
-
-def IndiceProfesr(profesor):
-    for i, prof in enumerate(profesores):
-        if prof["profesor"] == profesor:
-            return i
-    return -1
-
 def MateriasBloquesProfesores(materias):
-
-    print("=========================================================================================")
-    print("***************************************Semestre 1****************************************")
-    print("=========================================================================================")
+    print("===================================================================================")
+    print("************************************Semestre 1*************************************")
+    print("===================================================================================")
     for m in materias:
         if m["semestre"] == 0:
-            indice = IndiceProfesr(m["profesor"]["profesor"])
-            print(f'{indice}.-  profesor: {m["profesor"]["profesor"]:<15} semestre:{m["semestre"] + 1:<3} materia: {m["materia"]:<15}  bloques restantes:{m["bloques"]:<3}')
-
+            print(f'semestre:{m["semestre"] + 1:<3} materia: {m["materia"]:<15} profesor: {m["profesor"]["profesor"]:<15} bloques restantes:{m["bloques"]:<3}')
         else:
             continue
     print("\n")
-    print("=========================================================================================")
-    print("***************************************Semestre 2****************************************")
-    print("=========================================================================================")
+    print("===================================================================================")
+    print("************************************Semestre 2*************************************")
+    print("===================================================================================")
     for m in materias:
         if m["semestre"] == 1:
-            indice = IndiceProfesr(m["profesor"]["profesor"])
-            print(f'{indice}.-  profesor: {m["profesor"]["profesor"]:<15} semestre:{m["semestre"] + 1:<3} materia: {m["materia"]:<15}  bloques restantes:{m["bloques"]:<3}')
-
+            print(f'semestre:{m["semestre"] + 1:<3} materia: {m["materia"]:<15} profesor: {m["profesor"]["profesor"]:<15} bloques restantes:{m["bloques"]:<3}')
         else:
             continue
     print("\n")
-    print("=========================================================================================")
-    print("***************************************Semestre 3****************************************")
-    print("=========================================================================================")
+    print("===================================================================================")
+    print("************************************Semestre 3*************************************")
+    print("===================================================================================")
+
     for m in materias:
         if m["semestre"] == 2:
-            indice = IndiceProfesr(m["profesor"]["profesor"])
-            print(f'{indice}.-  profesor: {m["profesor"]["profesor"]:<15} semestre:{m["semestre"] + 1:<3} materia: {m["materia"]:<15}  bloques restantes:{m["bloques"]:<3}')
- 
+            print(f'semestre:{m["semestre"] + 1:<3} materia: {m["materia"]:<15} profesor: {m["profesor"]["profesor"]:<15} bloques restantes:{m["bloques"]:<3}')
         else:
             continue
     print("\n")
-    print("=========================================================================================")
-    print("***************************************Semestre 4****************************************")
-    print("=========================================================================================")
+    print("===================================================================================")
+    print("************************************Semestre 4*************************************")
+    print("===================================================================================")
+
     for m in materias:
         if m["semestre"] == 3:
-            indice = IndiceProfesr(m["profesor"]["profesor"])
-            print(f'{indice}.-  profesor: {m["profesor"]["profesor"]:<15} semestre:{m["semestre"] + 1:<3} materia: {m["materia"]:<15}  bloques restantes:{m["bloques"]:<3}')
+            print(f'semestre:{m["semestre"] + 1:<3} materia: {m["materia"]:<15} profesor: {m["profesor"]["profesor"]:<15} bloques restantes:{m["bloques"]:<3}')
         else:
-            continue
-    
-
+            continue    
     print("\n")
-
-def ChecarHorarios():
-    checando = True
-    checandoProf = True
-    while (checando):
-        MateriasBloquesProfesores(materias)
-        print("¿Desea observar la dispoinibilidad de algun profesor?\n")
-        print("1.- Si\n")
-        print("2.- No\n")
-        eleccion = input("Ingrese el número de su elección: ")
-
-        if eleccion == "1":
-            subprocess.run('cls', shell=True) 
-            checandoProf = True
-            while (checandoProf):
-                MateriasBloquesProfesores(materias)
-                print("Ingrese el número del profesor para observar su calendario")
-                print("Si no desea observar ninguno, ingrese -1 para salir\n")
-
-                eleccion = int(input("Ingrese el número del profesor, localizado a la izquierda de su nombre: "))
-                
-                if eleccion< len(profesores) and eleccion >-1 :
-                    subprocess.run('cls', shell=True)
-                    ImprimirCalendarioProfesor(eleccion)
-
-                elif eleccion == -1:
-                    checandoProf = False
-                    checando = False
-                    return
-                    
-                else:
-                    subprocess.run('cls', shell=True)
-                    print("Número no válido, por favor ingrese un número dentro del rango o -1 para salir\n")      
-                    input("Presione Enter para continuar...") 
-                
-
-        if eleccion == "2":
-            checando = False
-        else:
-            subprocess.run('cls', shell=True)
-            print("Opción no válida, por favor ingrese 1 o 2\n")
-            input("Presione Enter para continuar...")
-            subprocess.run('cls', shell=True)
-    
 
 def ls_materias_computo(materias):
     materias_computo = []
@@ -1027,8 +873,7 @@ def MainMenu():
         input("Presiona Enter para continuar...")
         subprocess.run('cls', shell=True)
         MateriasBloquesProfesores(materias)
-        subprocess.run('cls', shell=True) 
-        ChecarHorarios()
+        input_ignore = input("Presiona Enter para regresar...")
         subprocess.run('cls', shell=True)
     
     def configuracion_del_sandwich():
@@ -1152,7 +997,6 @@ def MainMenu():
 
             case "1":
                 generar_calendario()
-                
 
             case "2":
                 ver_calendario()
@@ -1162,7 +1006,6 @@ def MainMenu():
             
             case "4":
                 mostrar_materias_bloques_y_profesores()
-                
 
             case "5":
                 mostrar_ls_materias_computo()
