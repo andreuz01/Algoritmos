@@ -1,29 +1,6 @@
-# <- FALTA ->
-
-# Prueba 4a y 4c: Horario y disponibilidad de un profesor
-# Completar la función mostrar_calendario_profesor() en MainMenu()
-# El flujo debe ser:
-#
-# 1. Mostrar lista de profesores numerada para que el usuario elija
-#    Crear función ls_profesores(profesores) que imprima cada profesor con su índice
-#
-# 2. Recibir input del usuario con el número del profesor elegido
-#
-# 3. Imprimir disponibilidad ORIGINAL del profesor (antes de generar el horario)
-#    Crear función imprimir_horario_profeOG(profesoresOG, indice)
-#    Los horarios originales están guardados en profesoresOG (deepcopy al inicio del archivo)
-#    True = disponible, False = no disponible
-#
-# 4. Imprimir el horario ASIGNADO del profesor (después de generar el horario)
-#    Crear función imprimir_horario_profe(calendarios, materias, nombre_profesor)
-#    Recorrer todos los calendarios y buscar en qué bloques aparece el nombre del profesor
-#    Esto demuestra 4a (no está en dos bloques a la vez) y 4c (respeta su disponibilidad original)
-
 import numpy as np
 import copy #Permite deepcopy, sirve para copiar objetos complejos como diccionarios y listas
 import subprocess
-
-from pyparsing import col
 
 subprocess.run('cls', shell=True) #Para limpiar la pantalla al inicio de cada ejecución del código
 
@@ -694,9 +671,11 @@ def ImprimirCalendarioProfesor(eleccion):
         
         # Imprimir disponibilidad para cada día
         for j in range(5):
-            if horario[i][j]:
+            if horario[i][j] and horarioA[i][j]:
                 texto = "Disponible"
-            else:
+            elif horarioA[i][j] and not horario[i][j]:
+                texto = "Clase"
+            else: 
                 texto = "Ocupado"
             print(f"| {texto.center(ancho)}", end=" ")
         print("|")
@@ -791,12 +770,12 @@ def ChecarHorariosProfesores():
                         
                     else:
                         subprocess.run('cls', shell=True)
-                        print(f"Número no válido, por favor ingrese un número dentro del rango 0 - {len(profesores) - 1} para salir\n")      
+                        print(f"Número no válido, por favor ingrese un número dentro del rango 0 - {len(profesores) - 1}, o {len(profesores)} para salir\n")      
                         input("Presione Enter para continuar...") 
                         subprocess.run('cls', shell=True)
                 except ValueError:
                     subprocess.run('cls', shell=True)
-                    print(f"Entrada no válida, por favor ingrese un número entero dentro del rango 0 - {len(profesores) - 1} para salir\n")      
+                    print(f"Entrada no válida, por favor ingrese un número entero dentro del rango 0 - {len(profesores) - 1}, o {len(profesores)} para salir\n")      
                     input("Presione Enter para continuar...")
                     subprocess.run('cls', shell=True)
 
@@ -818,7 +797,6 @@ def ls_materias_computo(materias):
         for m in materias_computo:
             print(f'Semestre: {m["semestre"] + 1:<3} Materia: {m["materia"]:<15} Bloques: {m["bloques"]:<3}')
     print()
-
 
 def imprimir_computo(computo):
     #-----Calendarios de cómputo-----
