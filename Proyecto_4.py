@@ -775,8 +775,7 @@ def ChecarHorariosProfesores():
      checandoProf = True
      while (checandoProf):
                 listaProfesores()
-                print("\n")
-                print("Ingrese el número del profesor para observar su calendario")
+                print("\nIngrese el número del profesor para observar su calendario")
                 print(f"Si no desea observar ninguno, ingrese {len(profesores)} para salir\n")
                 try:
                     eleccion = int(input("Ingrese el número del profesor, localizado a la izquierda de su nombre: "))
@@ -802,50 +801,6 @@ def ChecarHorariosProfesores():
                     subprocess.run('cls', shell=True)
 
 ##Este checarhorarios quedo desterrado, iba a estar aplicado para la funcion 4 y todavia funciona, esta comentado en el 4, pero por opciones fue movido al 6
-'''
-def ChecarHorarios():
-    checando = True
-    checandoProf = True
-    while (checando):
-        listaProfesores()
-        print("¿Desea observar la dispoinibilidad de algun profesor?\n")
-        print("1.- Si\n")
-        print("2.- No\n")
-        eleccion = input("Ingrese el número de su elección: ")
-
-        if eleccion == "1":
-            subprocess.run('cls', shell=True) 
-            checandoProf = True
-            while (checandoProf):
-                listaProfesores()
-                print("Ingrese el número del profesor para observar su calendario")
-                print("Si no desea observar ninguno, ingrese -1 para salir\n")
-
-                eleccion = int(input("Ingrese el número del profesor, localizado a la izquierda de su nombre: "))
-                
-                if eleccion< len(profesores) and eleccion >-1 :
-                    subprocess.run('cls', shell=True)
-                    ImprimirCalendarioProfesor(eleccion)
-
-                elif eleccion == -1:
-                    checandoProf = False
-                    checando = False
-                    return
-                    
-                else:
-                    subprocess.run('cls', shell=True)
-                    print("Número no válido, por favor ingrese un número dentro del rango o -1 para salir\n")      
-                    input("Presione Enter para continuar...") 
-                
-
-        if eleccion == "2":
-            checando = False
-        else:
-            subprocess.run('cls', shell=True)
-            print("Opción no válida, por favor ingrese 1 o 2\n")
-            input("Presione Enter para continuar...")
-            subprocess.run('cls', shell=True)
-'''
 
 def ls_materias_computo(materias):
     materias_computo = []
