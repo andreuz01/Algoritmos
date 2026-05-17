@@ -594,6 +594,25 @@ def imprimir_horario(calendarios, materias):
                 print("=" * ancho_total)
             print()
 
+def ActualizarProfesores():
+
+    for semestre in calendarios:
+     calendario = semestre["calendario"]  
+     for fila in range(calendario.shape[0]):  
+        for col in range(calendario.shape[1]):  
+            materia = calendario[fila][col]
+
+            if materia != "empty".ljust(30) and materia != "vacío":
+
+                for m in materias:
+
+                    if m["materia"] == materia:
+
+                        for profesor in profesores:
+                            if profesor["profesor"] == m["profesor"]["profesor"]:
+                                profesor["horarios"][fila][col] = False
+                                break
+                        break
 
 def ImprimirCalendarioProfesor(eleccion):
     # Obtener el profesor seleccionado
@@ -741,12 +760,52 @@ def MateriasBloquesProfesores(materias):
     
 
     print("\n")
+    cosa = input("Presione Enter para continuar...")
 
+
+
+def listaProfesores():
+    for i,p in enumerate(profesores):
+        print(f'{i}.- Profesor: {p["profesor"]}')
+    ##print("\n")
+
+def ChecarHorariosProfesores():
+     checandoProf = True
+     while (checandoProf):
+                listaProfesores()
+                print("\n")
+                print("Ingrese el número del profesor para observar su calendario")
+                print(f"Si no desea observar ninguno, ingrese {len(profesores)} para salir\n")
+                try:
+                    eleccion = int(input("Ingrese el número del profesor, localizado a la izquierda de su nombre: "))
+                    
+                    if eleccion< len(profesores) and eleccion >= 0:
+                        subprocess.run('cls', shell=True)
+                        ImprimirCalendarioProfesor(eleccion)
+
+                    elif eleccion == len(profesores):
+                        checandoProf = False
+                        checando = False
+                        return
+                        
+                    else:
+                        subprocess.run('cls', shell=True)
+                        print(f"Número no válido, por favor ingrese un número dentro del rango 0 - {len(profesores) - 1} para salir\n")      
+                        input("Presione Enter para continuar...") 
+                        subprocess.run('cls', shell=True)
+                except ValueError:
+                    subprocess.run('cls', shell=True)
+                    print(f"Entrada no válida, por favor ingrese un número entero dentro del rango 0 - {len(profesores) - 1} para salir\n")      
+                    input("Presione Enter para continuar...")
+                    subprocess.run('cls', shell=True)
+
+##Este checarhorarios quedo desterrado, iba a estar aplicado para la funcion 4 y todavia funciona, esta comentado en el 4, pero por opciones fue movido al 6
+'''
 def ChecarHorarios():
     checando = True
     checandoProf = True
     while (checando):
-        MateriasBloquesProfesores(materias)
+        listaProfesores()
         print("¿Desea observar la dispoinibilidad de algun profesor?\n")
         print("1.- Si\n")
         print("2.- No\n")
@@ -756,7 +815,7 @@ def ChecarHorarios():
             subprocess.run('cls', shell=True) 
             checandoProf = True
             while (checandoProf):
-                MateriasBloquesProfesores(materias)
+                listaProfesores()
                 print("Ingrese el número del profesor para observar su calendario")
                 print("Si no desea observar ninguno, ingrese -1 para salir\n")
 
@@ -784,7 +843,7 @@ def ChecarHorarios():
             print("Opción no válida, por favor ingrese 1 o 2\n")
             input("Presione Enter para continuar...")
             subprocess.run('cls', shell=True)
-    
+'''
 
 def ls_materias_computo(materias):
     materias_computo = []
@@ -802,6 +861,7 @@ def ls_materias_computo(materias):
         for m in materias_computo:
             print(f'Semestre: {m["semestre"] + 1:<3} Materia: {m["materia"]:<15} Bloques: {m["bloques"]:<3}')
     print()
+
 
 def imprimir_computo(computo):
     #-----Calendarios de cómputo-----
@@ -1005,7 +1065,7 @@ def MainMenu():
             print(f"\nInicializando generador de horario SIN huecos en el horario\n")
         if verificar(materias):
             Horario(calendarios, materias, computo, global_sandwich)
-        
+        ActualizarProfesores() ## actualizar profesores actualiza sus horarios globalmente para otras funciones
         input("Presiona Enter para continuar...")
         subprocess.run('cls', shell=True)
     
@@ -1024,12 +1084,17 @@ def MainMenu():
         print(" -Cada asignatura debe cubrir exactamente su número requerido de bloques\n")
         print("Para demostrar estos puntos, vea la lista de materias con sus bloques antes de generar el horario")
         print("y regrese a verificar los bloques faltantes después de haberlo generado\n")
+
+        print("Los profesores siguen el siguiente indice: \n")
+        listaProfesores()
+        print("\n")
+
         input("Presiona Enter para continuar...")
         subprocess.run('cls', shell=True)
         MateriasBloquesProfesores(materias)
         subprocess.run('cls', shell=True) 
-        ChecarHorarios()
-        subprocess.run('cls', shell=True)
+        ##ChecarHorarios()
+       ## subprocess.run('cls', shell=True)
     
     def configuracion_del_sandwich():
         global global_sandwich
@@ -1096,7 +1161,9 @@ def MainMenu():
         print("-debe respetar su disponibilidad\n")
         print("A continuación se muestra una lista de profesores a elegir para visualizar su disponibilidad y horario asignado\n")
 
-        print("Desea...\n")
+        cosa = input("Presiona Enter para continuar...")
+        subprocess.run('cls', shell=True)
+        ChecarHorariosProfesores()
         #Ver un profesor
         #Regresar
 
@@ -1108,7 +1175,7 @@ def MainMenu():
         #imprimir_horario_profeOG(...)
         #imprimir_horario_profe(...)
         
-        input_ignore = input("Presiona Enter para regresar...")
+        ##input_ignore = input("Presiona Enter para regresar...")
         subprocess.run('cls', shell=True)
 
     def borrar_datos():
@@ -1163,7 +1230,6 @@ def MainMenu():
             case "4":
                 mostrar_materias_bloques_y_profesores()
                 
-
             case "5":
                 mostrar_ls_materias_computo()
 
