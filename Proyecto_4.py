@@ -594,6 +594,7 @@ def imprimir_horario(calendarios, materias):
                 print("=" * ancho_total)
             print()
 
+#Actualiza las matrices de horario de la lista de los profesores para cada profesor
 def ActualizarProfesores():
 
     for semestre in calendarios:
@@ -763,12 +764,13 @@ def MateriasBloquesProfesores(materias):
     cosa = input("Presione Enter para continuar...")
 
 
-
+#Imprime la lista de los profesores
 def listaProfesores():
     for i,p in enumerate(profesores):
         print(f'{i}.- Profesor: {p["profesor"]}')
     ##print("\n")
 
+#Menu para revisar los horarios de los profesores
 def ChecarHorariosProfesores():
      checandoProf = True
      while (checandoProf):
